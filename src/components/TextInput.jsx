@@ -7,7 +7,7 @@ const TextInput = ({
   placeholder,
 }) => {
   return (
-    <div className='relative flex flex-col mb-12'>
+    <div className='relative flex flex-col mb-10'>
       <label
         htmlFor={name}
         className='block text-sm font-medium leading-6 text-gray-900'

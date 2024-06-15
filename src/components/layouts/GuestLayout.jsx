@@ -6,7 +6,7 @@ const GuestLayout = () => {
   return (
     <div className='max-w-6xl p-6 pt-10 mx-auto font-medium font-poppins'>
       <Header />
-      <main className='mt-24'>
+      <main className='md:mt-12'>
         <Outlet />
       </main>
       <Footer />
