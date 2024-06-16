@@ -1,4 +1,8 @@
 import { useForm } from 'react-hook-form';
+import getCSRFToken from '../services/session/getCSRFToken';
+import registerUser from '../services/session/registerUser';
+import { useNavigate } from 'react-router-dom';
+import { mutate } from 'swr';
 
 const useRegister = () => {
   const {
@@ -8,9 +12,18 @@ const useRegister = () => {
     watch,
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
-    // Add your registration logic here
+  const navigate = useNavigate();
+
+  const onSubmit = async (data) => {
+    try {
+      console.log(data);
+      await getCSRFToken();
+      await registerUser(data);
+      mutate('/api/user');
+      navigate('/dashboard');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return {
