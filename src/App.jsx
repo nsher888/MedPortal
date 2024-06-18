@@ -5,6 +5,7 @@ import GuestLayout from './components/layouts/GuestLayout';
 import Register from './pages/Register/Register';
 import Dashboard from './pages/Dashboard/Dashboard';
 import AppLayout from './components/layouts/AppLayout';
+import Profile from './pages/Dashboard/Profile/Profile';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         </Route>
         <Route path='dashboard' element={<AppLayout />}>
           <Route index element={<Dashboard />} />;
+          <Route path='profile' element={<Profile />} />;
         </Route>
       </Routes>
     </>

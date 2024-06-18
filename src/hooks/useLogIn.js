@@ -2,9 +2,10 @@ import { useForm } from 'react-hook-form';
 import getCSRFToken from '../services/session/getCSRFToken';
 import logInUser from '../services/session/logInUser';
 import { useNavigate } from 'react-router-dom';
-import { mutate } from 'swr';
+import { useAuth } from './useAuth';
 
 const useLogIn = () => {
+  const { getProfile } = useAuth();
   const {
     register,
     handleSubmit,
@@ -19,7 +20,7 @@ const useLogIn = () => {
     try {
       await getCSRFToken();
       await logInUser(data);
-      mutate('/api/user');
+      await getProfile();
       navigate('/dashboard');
     } catch (error) {
       console.error(error);

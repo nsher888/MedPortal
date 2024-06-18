@@ -1,55 +1,33 @@
-import useSWR from 'swr';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import instance from '../services/axios';
 import getUserData from '../services/session/getUserData';
+import logOutUser from '../services/session/logOutUser';
+import { useAuthStore } from './../store/AuthStore';
 
-export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
-  const navigate = useNavigate();
+export function useAuth() {
+  const { profile, setProfile } = useAuthStore();
 
-  const fetcher = async () => {
-    const response = await getUserData();
-    return response.data;
+  const getProfile = async () => {
+    try {
+      const userData = await getUserData();
+      setProfile(userData);
+    } catch (err) {
+      console.warn(err);
+      setProfile(null);
+    }
   };
-
-  const {
-    data: user,
-    error,
-    mutate,
-  } = useSWR('/api/user', fetcher, {
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    shouldRetryOnError: false,
-  });
 
   const logout = async () => {
     try {
-      await instance.post('/logout');
-      mutate(null, false);
-      navigate('/');
+      await logOutUser();
+      setProfile(null);
     } catch (err) {
-      console.error('Logout failed:', err);
+      console.warn(err);
     }
   };
-
-  useEffect(() => {
-    if (middleware === 'guest' && redirectIfAuthenticated && user) {
-      navigate(redirectIfAuthenticated);
-      console.log('Redirecting to:', redirectIfAuthenticated);
-    }
-    if (middleware === 'auth' && error) {
-      logout();
-    }
-  }, [user, error]);
-
-  useEffect(() => {
-    if (!user && !error) {
-      mutate();
-    }
-  }, []);
 
   return {
-    user,
+    isAuth: Boolean(profile),
+    profile,
     logout,
+    getProfile,
   };
-};
+}
