@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import TextInput from '../../components/TextInput';
 import useLogIn from '../../hooks/useLogIn';
 
@@ -57,12 +58,12 @@ const LogIn = () => {
                   />
 
                   <div className='mb-10'>
-                    <a
-                      href='#'
+                    <Link
+                      to={'/forgot-password'}
                       className='font-semibold text-customBlue hover:text-customBlueHover'
                     >
                       Forgot password?
-                    </a>
+                    </Link>
                   </div>
 
                   <div>
