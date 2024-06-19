@@ -8,8 +8,8 @@ import AppLayout from './components/layouts/AppLayout';
 import Profile from './pages/Dashboard/Profile/Profile';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 import ResetPassword from './pages/ForgotPassword/ResetPassword';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import CustomToastContainer from './components/ToastContainer';
 
 function App() {
   return (
@@ -28,18 +28,7 @@ function App() {
           <Route path='profile' element={<Profile />} />;
         </Route>
       </Routes>
-      <ToastContainer
-        position='top-right'
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme='light'
-      />
+      <CustomToastContainer />
     </>
   );
 }
