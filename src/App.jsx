@@ -10,10 +10,13 @@ import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 import ResetPassword from './pages/ForgotPassword/ResetPassword';
 import 'react-toastify/dist/ReactToastify.css';
 import CustomToastContainer from './components/ToastContainer';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <Routes>
         <Route path='/' element={<GuestLayout />}>
           <Route index element={<HomePage />} />;
@@ -29,7 +32,7 @@ function App() {
         </Route>
       </Routes>
       <CustomToastContainer />
-    </>
+    </QueryClientProvider>
   );
 }
 

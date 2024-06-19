@@ -5,11 +5,13 @@ import Sidebar from '../SideBar';
 import LoadingPlaceholder from './../LoadingPlaceholder';
 import { useCheckAuth } from '../../hooks/useCheckAuth';
 import { useAuth } from '../../hooks/useAuth';
+import { useUserProfile } from '../../hooks/useUserProfile';
 
 export default function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const isSessionVerified = useCheckAuth();
-  const { isAuth, logout, profile } = useAuth();
+  const { isAuth, logout } = useAuth();
+  const { data: profile, isLoading } = useUserProfile();
 
   if (!isSessionVerified && !isAuth) {
     return <LoadingPlaceholder />;
@@ -17,6 +19,10 @@ export default function AppLayout() {
 
   if (!isAuth) {
     return <Navigate to='/' />;
+  }
+
+  if (isLoading) {
+    return <LoadingPlaceholder />;
   }
 
   return (
