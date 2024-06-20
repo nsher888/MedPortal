@@ -1,5 +1,6 @@
 import getUserData from '../services/session/getUserData';
 import logOutUser from '../services/session/logOutUser';
+
 import { useAuthStore } from './../store/AuthStore';
 
 export function useAuth() {

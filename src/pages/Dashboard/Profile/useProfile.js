@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+
 import { useAuth } from '../../../hooks/useAuth';
 import { useUserProfile } from '../../../hooks/useUserProfile';
-import { useForm } from 'react-hook-form';
 import { changePassword } from '../../../services/session/resetPassword';
-import { toast } from 'react-toastify';
 
 const useProfile = () => {
   const { logout } = useAuth();

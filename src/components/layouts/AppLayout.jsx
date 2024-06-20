@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
+
+import { useAuth } from '../../hooks/useAuth';
+import { useCheckAuth } from '../../hooks/useCheckAuth';
+import { useUserProfile } from '../../hooks/useUserProfile';
 import AppHeader from '../AppHeader';
 import Sidebar from '../SideBar';
+
 import LoadingPlaceholder from './../LoadingPlaceholder';
-import { useCheckAuth } from '../../hooks/useCheckAuth';
-import { useAuth } from '../../hooks/useAuth';
-import { useUserProfile } from '../../hooks/useUserProfile';
 
 export default function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);

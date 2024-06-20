@@ -1,5 +1,6 @@
-import TextInput from '../../components/TextInput';
 import useRegister from '@/hooks/useRegister';
+
+import TextInput from '../../components/TextInput';
 
 const Register = () => {
   const { register, handleSubmit, errors, onSubmit, watch } = useRegister();

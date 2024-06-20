@@ -1,7 +1,9 @@
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+
 import getCSRFToken from '../services/session/getCSRFToken';
 import logInUser from '../services/session/logInUser';
-import { useNavigate } from 'react-router-dom';
+
 import { useAuth } from './useAuth';
 
 const useLogIn = () => {

@@ -1,8 +1,9 @@
-import ServiceCard from './ServiceCard';
+import { IoChatbubbleEllipsesOutline } from 'react-icons/io5';
 import { LuMicroscope } from 'react-icons/lu';
 import { RiCalendarScheduleFill } from 'react-icons/ri';
-import { IoChatbubbleEllipsesOutline } from 'react-icons/io5';
+
 import Section from './Section';
+import ServiceCard from './ServiceCard';
 
 const Services = () => {
   return (

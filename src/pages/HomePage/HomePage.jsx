@@ -1,6 +1,6 @@
-import { Button, Services, Testimonials } from './components';
-
 import HomePageImg from '@/assets/homepage-img.png';
+
+import { Button, Services, Testimonials } from './components';
 
 const HomePage = () => {
   return (

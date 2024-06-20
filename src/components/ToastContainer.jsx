@@ -1,4 +1,5 @@
 import { ToastContainer } from 'react-toastify';
+
 import { toastConfig } from '../config/toastConfig';
 
 const CustomToastContainer = () => {

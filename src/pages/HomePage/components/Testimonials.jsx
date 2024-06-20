@@ -1,8 +1,9 @@
-import { BsStarFill, BsChevronLeft, BsChevronRight } from 'react-icons/bs';
-import TestimonialImg1 from '@/assets/TestimonialImg2.png';
-import TestimonialImg2 from '@/assets/TestimonialImg1.png';
-import TestimonialImg3 from '@/assets/TestimonialImg3.png';
 import { useState } from 'react';
+import { BsStarFill, BsChevronLeft, BsChevronRight } from 'react-icons/bs';
+
+import TestimonialImg2 from '@/assets/TestimonialImg1.png';
+import TestimonialImg1 from '@/assets/TestimonialImg2.png';
+import TestimonialImg3 from '@/assets/TestimonialImg3.png';
 
 const testimonials = [
   {
@@ -37,26 +38,26 @@ const Testimonials = () => {
 
   return (
     <section className='mt-20'>
-      <h2 className='text-3xl font-bold text-center mb-10'>
+      <h2 className='mb-10 text-3xl font-bold text-center'>
         Patient Testimonials
       </h2>
       <div className='relative flex items-center justify-center'>
         <button
           onClick={prevTestimonial}
-          className='absolute left-0 bg-white p-2 rounded-full shadow-lg hover:bg-gray-100 transition'
+          className='absolute left-0 p-2 transition bg-white rounded-full shadow-lg hover:bg-gray-100'
         >
           <BsChevronLeft size='2em' />
         </button>
-        <div className='bg-white p-8 rounded-xl shadow-lg text-center max-w-lg mx-4'>
+        <div className='max-w-lg p-8 mx-4 text-center bg-white shadow-lg rounded-xl'>
           <div className='flex justify-center mb-4'>
             <img
               src={testimonials[current].image}
               alt='patient'
-              className='w-24 h-24 rounded-full object-cover'
+              className='object-cover w-24 h-24 rounded-full'
               style={{ aspectRatio: '1 / 1' }}
             />
           </div>
-          <p className='text-lg italic mb-4'>`{testimonials[current].text}`</p>
+          <p className='mb-4 text-lg italic'>`{testimonials[current].text}`</p>
           <div className='flex justify-center gap-1 mb-4'>
             <BsStarFill className='text-yellow-500' />
             <BsStarFill className='text-yellow-500' />
@@ -68,7 +69,7 @@ const Testimonials = () => {
         </div>
         <button
           onClick={nextTestimonial}
-          className='absolute right-0 bg-white p-2 rounded-full shadow-lg hover:bg-gray-100 transition'
+          className='absolute right-0 p-2 transition bg-white rounded-full shadow-lg hover:bg-gray-100'
         >
           <BsChevronRight size='2em' />
         </button>
