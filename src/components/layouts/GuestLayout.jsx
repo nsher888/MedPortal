@@ -1,7 +1,8 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import Header from '../Header';
-import Footer from '../Footer';
+
 import { useAuth } from '../../hooks/useAuth';
+import Footer from '../Footer';
+import Header from '../Header';
 
 const GuestLayout = () => {
   const { isAuth } = useAuth();

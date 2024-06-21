@@ -9,3 +9,8 @@ export const resetPassword = async (data) => {
   const response = await instance.post('/reset-password', data);
   return response;
 };
+
+export const changePassword = async (data) => {
+  const response = await instance.patch('user/change-password', data);
+  return response;
+};

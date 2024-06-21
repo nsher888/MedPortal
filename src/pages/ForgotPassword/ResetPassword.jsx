@@ -1,8 +1,9 @@
-import { useParams, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { resetPassword } from '../../services/session/resetPassword';
+import { useParams, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
+
 import TextInput from '../../components/TextInput';
+import { resetPassword } from '../../services/session/resetPassword';
 
 const ResetPassword = () => {
   const { token } = useParams();

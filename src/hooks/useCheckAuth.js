@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
-import { useAuthStore, useSessionVerified } from '../store/AuthStore';
+
 import instance from '../services/axios';
+import { useAuthStore, useSessionVerified } from '../store/AuthStore';
 
 export function useCheckAuth() {
   const { setProfile } = useAuthStore();

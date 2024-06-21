@@ -1,11 +1,12 @@
 // src/hooks/usePasswordReset.js
 import { useForm } from 'react-hook-form';
+import { useParams, useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 import {
   resetPassword,
   forgotPassword,
 } from '../services/session/resetPassword';
-import { toast } from 'react-toastify';
-import { useParams, useLocation } from 'react-router-dom';
 
 export const usePasswordReset = (isResetPassword) => {
   const { token } = useParams();
