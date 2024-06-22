@@ -1,6 +1,30 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
+import { routes } from '../routes';
+
+export default function Sidebar({ sidebarOpen, setSidebarOpen, roles }) {
+  const [sidebarItems, setSidebarItems] = useState([]);
+
+  useEffect(() => {
+    const getSidebarItems = () => {
+      const items = [];
+      if (roles.includes('clinic')) {
+        items.push(
+          routes.dashboard,
+          routes.manageDoctors,
+          routes.manageTestResults,
+        );
+      } else if (roles.includes('doctor')) {
+        items.push(routes.manageFiles);
+      }
+
+      return items;
+    };
+
+    setSidebarItems(getSidebarItems());
+  }, [roles]);
+
   return (
     <>
       {sidebarOpen && (
@@ -31,17 +55,19 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
                   <ul role='list' className='flex flex-col flex-1 gap-y-7'>
                     <li>
                       <ul role='list' className='-mx-2 space-y-1'>
-                        <li>
-                          <Link
-                            to='.'
-                            className='flex p-2 text-sm font-semibold leading-6 text-indigo-600 rounded-md bg-gray-50 group gap-x-3'
-                          >
-                            <div className='w-6 h-6 text-indigo-600 shrink-0'>
-                              🏠
-                            </div>
-                            Dashboard
-                          </Link>
-                        </li>
+                        {sidebarItems.map((item, index) => (
+                          <li key={index}>
+                            <Link
+                              to={item.url}
+                              className='flex p-2 text-sm font-semibold leading-6 text-indigo-600 rounded-md bg-gray-50 group gap-x-3'
+                            >
+                              <div className='w-6 h-6 text-indigo-600 shrink-0'>
+                                {item.icon}
+                              </div>
+                              {item.name}
+                            </Link>
+                          </li>
+                        ))}
                       </ul>
                     </li>
                     <li className='mt-auto'>
@@ -71,19 +97,19 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
           </div>
           <nav className='flex flex-col flex-1'>
             <ul role='list' className='flex flex-col flex-1 gap-y-7'>
-              <li>
-                <ul role='list' className='-mx-2 space-y-1'>
-                  <li>
-                    <Link
-                      to='.'
-                      className='flex p-2 text-sm font-semibold leading-6 text-indigo-600 rounded-md bg-gray-50 group gap-x-3'
-                    >
-                      <div className='w-6 h-6 text-indigo-600 shrink-0'>🏠</div>
-                      Dashboard
-                    </Link>
-                  </li>
-                </ul>
-              </li>
+              {sidebarItems.map((item, index) => (
+                <li key={index}>
+                  <Link
+                    to={item.url}
+                    className='flex p-2 text-sm font-semibold leading-6 text-indigo-600 rounded-md bg-gray-50 group gap-x-3'
+                  >
+                    <div className='w-6 h-6 text-indigo-600 shrink-0'>
+                      {item.icon}
+                    </div>
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </nav>
         </div>
