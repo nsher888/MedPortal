@@ -6,7 +6,7 @@ export const routes = {
   },
   manageDoctors: {
     name: 'Manage Doctors',
-    url: '/manage-doctors',
+    url: 'doctors-list',
     icon: '👨‍⚕️',
   },
   manageTestResults: {
