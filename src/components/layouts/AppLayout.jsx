@@ -3,7 +3,6 @@ import { Navigate, Outlet } from 'react-router-dom';
 
 import { useAuth } from '../../hooks/useAuth';
 import { useCheckAuth } from '../../hooks/useCheckAuth';
-import { useUserProfile } from '../../hooks/useUserProfile';
 import AppHeader from '../AppHeader';
 import Sidebar from '../SideBar';
 
@@ -12,8 +11,7 @@ import LoadingPlaceholder from './../LoadingPlaceholder';
 export default function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const isSessionVerified = useCheckAuth();
-  const { isAuth, logout } = useAuth();
-  const { data: profile, isLoading } = useUserProfile();
+  const { isAuth, logout, profile } = useAuth();
 
   if (!isSessionVerified && !isAuth) {
     return <LoadingPlaceholder />;
@@ -23,13 +21,13 @@ export default function AppLayout() {
     return <Navigate to='/' />;
   }
 
-  if (isLoading) {
-    return <LoadingPlaceholder />;
-  }
-
   return (
     <div>
-      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+      <Sidebar
+        sidebarOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
+        roles={profile.roles}
+      />
       <div className='lg:pl-72'>
         <AppHeader
           setSidebarOpen={setSidebarOpen}
