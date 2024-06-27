@@ -11,12 +11,7 @@ export const routes = {
   },
   manageTestResults: {
     name: 'Manage Test Results',
-    url: '/manage-test-results',
+    url: 'manage-test-results',
     icon: '📊',
-  },
-  manageFiles: {
-    name: 'Manage Files',
-    url: '/manage-files',
-    icon: '📂',
   },
 };

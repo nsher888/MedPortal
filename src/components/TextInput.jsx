@@ -5,9 +5,10 @@ const TextInput = ({
   errorMessage,
   register,
   placeholder,
+  className,
 }) => {
   return (
-    <div className='relative flex flex-col mb-10'>
+    <div className={`relative flex flex-col mb-10 ${className}`}>
       <label
         htmlFor={name}
         className='block text-sm font-medium leading-6 text-gray-900'
