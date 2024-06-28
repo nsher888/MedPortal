@@ -19,6 +19,7 @@ const Profile = () => {
   }
 
   const isClinic = profile.roles.includes('clinic');
+  const isDoctor = profile.roles.includes('doctor');
 
   return (
     <>
@@ -62,32 +63,40 @@ const Profile = () => {
                     <span className='text-gray-900'>{profile.surname}</span>
                   )}
                 </li>
-                <li className='flex items-center'>
-                  <span className='w-32 font-medium text-gray-700'>
-                    Date of Birth:
-                  </span>
-                  {isEditing ? (
-                    <input
-                      {...register('dateOfBirth')}
-                      type='date'
-                      className='px-3 py-2 border border-gray-300 rounded-md'
-                      required
-                      defaultValue={profile.dateOfBirth}
-                    />
-                  ) : (
-                    <span className='text-gray-900'>{profile.dateOfBirth}</span>
-                  )}
-                </li>
+
+                {profile.dateOfBirth && (
+                  <li className='flex items-center'>
+                    <span className='w-32 font-medium text-gray-700'>
+                      Date of Birth:
+                    </span>
+                    {isEditing ? (
+                      <input
+                        {...register('dateOfBirth')}
+                        type='date'
+                        className='px-3 py-2 border border-gray-300 rounded-md'
+                        required
+                        defaultValue={profile.dateOfBirth}
+                      />
+                    ) : (
+                      <span className='text-gray-900'>
+                        {profile.dateOfBirth}
+                      </span>
+                    )}
+                  </li>
+                )}
+
                 <li className='flex items-center'>
                   <span className='w-32 font-medium text-gray-700'>Email:</span>
                   <span className='text-gray-900'>{profile.email}</span>
                 </li>
-                <li className='flex items-center'>
-                  <span className='w-32 font-medium text-gray-700'>
-                    ID Number:
-                  </span>
-                  <span className='text-gray-900'>{profile.idNumber}</span>
-                </li>
+                {profile.idNumber && (
+                  <li className='flex items-center'>
+                    <span className='w-32 font-medium text-gray-700'>
+                      ID Number:
+                    </span>
+                    <span className='text-gray-900'>{profile.idNumber}</span>
+                  </li>
+                )}
               </ul>
 
               {isEditing && (
@@ -108,7 +117,8 @@ const Profile = () => {
                 </div>
               )}
             </form>
-            {!isEditing && (
+
+            {!isDoctor && !isEditing && (
               <button
                 onClick={() => setIsEditing(true)}
                 className='px-4 py-2 mt-4 font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700'

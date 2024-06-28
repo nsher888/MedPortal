@@ -16,7 +16,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, roles }) {
           routes.manageTestResults,
         );
       } else if (roles.includes('doctor')) {
-        items.push(routes.manageFiles);
+        items.push(routes.dashboard, routes.manageTestResults);
       }
 
       return items;

@@ -7,6 +7,8 @@ import GuestLayout from './components/layouts/GuestLayout';
 import CustomToastContainer from './components/ToastContainer';
 import DoctorDetail from './pages/Dashboard/Clinic/DoctorDetail';
 import DoctorsList from './pages/Dashboard/Clinic/DoctorsList';
+import ManageTestResults from './pages/Dashboard/Clinic/ManageTestResults';
+import ShowResult from './pages/Dashboard/Clinic/ShowResult';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Profile from './pages/Dashboard/Profile/Profile';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
@@ -34,6 +36,8 @@ function App() {
           <Route path='doctors-list' element={<DoctorsList />} />
           <Route path='doctors/:id' element={<DoctorDetail />} />
           <Route path='profile' element={<Profile />} />;
+          <Route path='manage-test-results' element={<ManageTestResults />} />
+          <Route path='manage-test-results/:id' element={<ShowResult />} />
         </Route>
       </Routes>
       <CustomToastContainer />
