@@ -25,21 +25,33 @@ const ManageTestResults = () => {
     loadTestTypeOptions,
     loadDoctorOptions,
     doctors,
+    page,
+    handlePreviousPage,
+    handleNextPage,
+    handleFirstPage,
+    handleLastPage,
+    handlePageChange,
+    perPage,
+    handlePerPageChange,
+    isPreviousData,
   } = useManageTestResults();
 
   if (isLoading) {
     return <p>Loading...</p>;
   }
 
+  const startItem = (page - 1) * perPage + 1;
+  const endItem = Math.min(page * perPage, results.total);
+
   return (
     <div className='px-4 sm:px-6 lg:px-4'>
       <div className='sm:flex sm:items-center'>
         <div className='sm:flex-auto'>
           <h1 className='text-base font-semibold leading-6 text-gray-900'>
-            Doctors
+            Test Results
           </h1>
           <p className='mt-2 text-sm text-gray-700'>
-            A list of all the doctors in the clinic.
+            A list of all the test results in the clinic.
           </p>
         </div>
         <div className='mt-4 sm:ml-16 sm:mt-0 sm:flex-none'>
@@ -69,14 +81,12 @@ const ManageTestResults = () => {
                   >
                     Surname
                   </th>
-
                   <th
                     scope='col'
                     className='py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900'
                   >
                     Date of Birth
                   </th>
-
                   <th
                     scope='col'
                     className='py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 '
@@ -93,7 +103,7 @@ const ManageTestResults = () => {
                     scope='col'
                     className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
                   >
-                    Id Number
+                    ID Number
                   </th>
                   <th
                     scope='col'
@@ -106,16 +116,15 @@ const ManageTestResults = () => {
                   </th>
                 </tr>
               </thead>
-
               <tbody className='bg-white divide-y divide-gray-200 '>
-                {results.length === 0 && (
+                {results.data.length === 0 && (
                   <tr className=''>
                     <td colSpan='8' className='p-4 text-center '>
                       No test results found
                     </td>
                   </tr>
                 )}
-                {results.map((result) => (
+                {results.data.map((result) => (
                   <tr key={result.id}>
                     <td className='py-4 pl-4 pr-3 text-sm font-medium text-gray-900 break-words max-w-[100px] sm:pl-6 lg:pl-8'>
                       {result.patientName}
@@ -160,6 +169,64 @@ const ManageTestResults = () => {
               </tbody>
             </table>
           </div>
+        </div>
+      </div>
+      <div className='flex items-center justify-between mt-4'>
+        <div className='text-sm text-gray-700'>
+          Showing {startItem} to {endItem} of {results.total} results
+        </div>
+        <div className='flex items-center'>
+          <button
+            className='px-3 py-1 mx-1 text-sm font-semibold text-gray-700 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500'
+            onClick={handleFirstPage}
+            disabled={page === 1}
+          >
+            &lt;&lt; First
+          </button>
+          <button
+            className='px-3 py-1 mx-1 text-sm font-semibold text-gray-700 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500'
+            onClick={handlePreviousPage}
+            disabled={page === 1}
+          >
+            &lt; Previous
+          </button>
+          <div className='flex items-center mx-2'>
+            Page{' '}
+            <input
+              type='number'
+              value={page}
+              onChange={handlePageChange}
+              onBlur={handlePageChange}
+              className='w-12 px-2 py-1 mx-1 text-sm font-semibold text-center text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500'
+              min={1}
+              max={results.last_page}
+            />{' '}
+            of {results.last_page}
+          </div>
+          <button
+            className='px-3 py-1 mx-1 text-sm font-semibold text-gray-700 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500'
+            onClick={handleNextPage}
+            disabled={isPreviousData || results.last_page <= page}
+          >
+            Next &gt;
+          </button>
+          <button
+            className='px-3 py-1 mx-1 text-sm font-semibold text-gray-700 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500'
+            onClick={handleLastPage}
+            disabled={isPreviousData || results.last_page <= page}
+          >
+            Last &gt;&gt;
+          </button>
+          <select
+            value={perPage}
+            onChange={handlePerPageChange}
+            className='px-3 py-1 ml-4 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500'
+          >
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+            <option value={50}>50</option>
+            <option value={100}>100</option>
+          </select>
         </div>
       </div>
       <Modal
@@ -228,7 +295,6 @@ const ManageTestResults = () => {
               <p className='text-red-600'>{errors.testType.message}</p>
             )}
           </div>
-
           {!isDoctor && (
             <div className='mb-6'>
               <Controller
@@ -240,7 +306,7 @@ const ManageTestResults = () => {
                     cacheOptions
                     isMulti
                     loadOptions={loadDoctorOptions}
-                    defaultOptions={doctors.data.map((doctor) => ({
+                    defaultOptions={doctors.map((doctor) => ({
                       label: `${doctor.name} ${doctor.surname}`,
                       value: doctor.id,
                     }))}
@@ -254,7 +320,6 @@ const ManageTestResults = () => {
               )}
             </div>
           )}
-
           <div className='mb-6'>
             <label
               htmlFor='testResult'
@@ -275,7 +340,6 @@ const ManageTestResults = () => {
               <p className='text-red-600'>{errors.testResult.message}</p>
             )}
           </div>
-
           <div className='flex justify-end'>
             <button
               type='submit'

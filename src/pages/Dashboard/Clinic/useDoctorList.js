@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
 
+import usePagination from '../../../hooks/usePagination';
 import {
   addDoctor,
   destroyDoctor,
@@ -11,13 +12,34 @@ import {
 export const useDoctorList = () => {
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const {
+    page,
+    perPage,
+    setTotalPages,
+    handlePreviousPage,
+    handleNextPage,
+    handleFirstPage,
+    handleLastPage,
+    handlePageChange,
+    handlePerPageChange,
+  } = usePagination();
 
   const {
     data: doctors,
     isLoading,
     isError,
     error,
-  } = useQuery('doctors', getDoctorsList);
+    isPreviousData,
+  } = useQuery(
+    ['doctors', page, perPage],
+    () => getDoctorsList(page, perPage),
+    {
+      keepPreviousData: true,
+      onSuccess: (data) => {
+        setTotalPages(data.last_page);
+      },
+    },
+  );
 
   const deleteDoctorMutation = useMutation(destroyDoctor, {
     onSuccess: () => {
@@ -59,5 +81,14 @@ export const useDoctorList = () => {
     setIsModalOpen,
     handleDeleteDoctor,
     handleAddDoctor,
+    handlePreviousPage,
+    handleNextPage,
+    handleFirstPage,
+    handleLastPage,
+    handlePageChange,
+    handlePerPageChange,
+    page,
+    perPage,
+    isPreviousData,
   };
 };

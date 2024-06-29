@@ -4,11 +4,11 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
 
 import { useAuth } from '../../../hooks/useAuth';
+import usePagination from '../../../hooks/usePagination';
+import { getAllDoctors } from '../../../services/doctors/doctors';
 import { deleteResult, getResults } from '../../../services/results/results';
 import { storeResult } from '../../../services/results/uploadResults';
 import { getTypes } from '../../../services/shared/types';
-
-import { useDoctorList } from './useDoctorList';
 
 export const useManageTestResults = () => {
   const { profile } = useAuth();
@@ -16,7 +16,6 @@ export const useManageTestResults = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [types, setTypes] = useState([]);
-  const { doctors } = useDoctorList();
   const {
     register,
     handleSubmit,
@@ -25,21 +24,63 @@ export const useManageTestResults = () => {
     formState: { errors },
   } = useForm();
 
+  const { data: doctors } = useQuery('doctors', getAllDoctors);
+
+  const {
+    page,
+    perPage,
+    setTotalPages,
+    handlePreviousPage,
+    handleNextPage,
+    handleFirstPage,
+    handleLastPage,
+    handlePageChange,
+    handlePerPageChange,
+  } = usePagination();
+
   const queryClient = useQueryClient();
 
-  const { data: results, error, isLoading } = useQuery('results', getResults);
+  const {
+    data: results,
+    isLoading,
+    isPreviousData,
+  } = useQuery(['results', page, perPage], () => getResults(page, perPage), {
+    keepPreviousData: true,
+    onSuccess: (data) => {
+      setTotalPages(data.last_page);
+    },
+  });
 
   const addResultMutation = useMutation(storeResult, {
     onSuccess: () => {
-      queryClient.invalidateQueries('results');
+      queryClient.invalidateQueries(['results', page, perPage]);
       toast.success('Test result added successfully');
       setIsModalOpen(false);
     },
   });
 
-  if (error) {
-    console.error('Error:', error);
-  }
+  const deleteResultMutation = useMutation(deleteResult, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['results', page, perPage]);
+      toast.success('Test result deleted successfully');
+    },
+  });
+
+  useEffect(() => {
+    const getTestTypes = async () => {
+      const response = await getTypes();
+
+      const finalTypes = response.map((type) => ({
+        label: type.name,
+        value: type.code,
+        id: type.id,
+      }));
+
+      setTypes(finalTypes);
+    };
+
+    getTestTypes();
+  }, []);
 
   const onSubmit = async (data) => {
     const formData = new FormData();
@@ -65,22 +106,6 @@ export const useManageTestResults = () => {
     }
   };
 
-  useEffect(() => {
-    const getTestTypes = async () => {
-      const response = await getTypes();
-
-      const finalTypes = response.map((type) => ({
-        label: type.name,
-        value: type.code,
-        id: type.id,
-      }));
-
-      setTypes(finalTypes);
-    };
-
-    getTestTypes();
-  }, []);
-
   const loadTestTypeOptions = (inputValue, callback) => {
     callback(
       types.filter((i) =>
@@ -89,16 +114,9 @@ export const useManageTestResults = () => {
     );
   };
 
-  const deleteResultMutation = useMutation(deleteResult, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('results');
-      toast.success('Test result deleted successfully');
-    },
-  });
-
   const loadDoctorOptions = (inputValue, callback) => {
     callback(
-      doctors.data
+      doctors
         .filter((i) => i.name.toLowerCase().includes(inputValue.toLowerCase()))
         .map((doctor) => ({
           label: `${doctor.name} ${doctor.surname}`,
@@ -124,5 +142,14 @@ export const useManageTestResults = () => {
     isDoctor,
     doctors,
     types,
+    page,
+    handlePreviousPage,
+    handleNextPage,
+    handleFirstPage,
+    handleLastPage,
+    handlePageChange,
+    perPage,
+    handlePerPageChange,
+    isPreviousData,
   };
 };

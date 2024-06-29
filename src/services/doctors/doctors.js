@@ -1,10 +1,16 @@
 import instance from '../axios';
 
-export const getDoctorsList = async () => {
-  const response = await instance.get('api/doctors');
-  return response;
+export const getDoctorsList = async (page = 1, perPage = 10) => {
+  const response = await instance.get(
+    `api/doctors?page=${page}&per_page=${perPage}`,
+  );
+  return response.data;
 };
 
+export const getAllDoctors = async () => {
+  const response = await instance.get('api/doctors/all');
+  return response.data;
+};
 export const destroyDoctor = async (id) => {
   const response = await instance.delete(`api/doctors/${id}`);
   return response;

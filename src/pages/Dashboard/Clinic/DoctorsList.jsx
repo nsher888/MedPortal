@@ -11,10 +11,19 @@ export default function DoctorsList() {
     isLoading,
     isError,
     error,
-    handleDeleteDoctor,
-    handleAddDoctor,
     isModalOpen,
     setIsModalOpen,
+    handleDeleteDoctor,
+    handleAddDoctor,
+    handlePreviousPage,
+    handleNextPage,
+    handleFirstPage,
+    handleLastPage,
+    handlePageChange,
+    handlePerPageChange,
+    page,
+    perPage,
+    isPreviousData,
   } = useDoctorList();
 
   if (isLoading) {
@@ -24,6 +33,9 @@ export default function DoctorsList() {
   if (isError) {
     return <div>Error: {error.message}</div>;
   }
+
+  const startItem = (page - 1) * perPage + 1;
+  const endItem = Math.min(page * perPage, doctors.total);
 
   return (
     <div className='px-4 sm:px-6 lg:px-4'>
@@ -79,7 +91,7 @@ export default function DoctorsList() {
                 </tr>
               </thead>
               <tbody className='bg-white divide-y divide-gray-200'>
-                {doctors.data.map((doctor) => (
+                {doctors.data.data.map((doctor) => (
                   <tr key={doctor.email}>
                     <td className='py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6 lg:pl-8'>
                       {doctor.name}
@@ -110,6 +122,64 @@ export default function DoctorsList() {
               </tbody>
             </table>
           </div>
+        </div>
+      </div>
+      <div className='flex items-center justify-between mt-4'>
+        <div className='text-sm text-gray-700'>
+          Showing {startItem} to {endItem} of {doctors.total} doctors
+        </div>
+        <div className='flex items-center'>
+          <button
+            className='px-3 py-1 mx-1 text-sm font-semibold text-gray-700 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500'
+            onClick={handleFirstPage}
+            disabled={page === 1}
+          >
+            &lt;&lt; First
+          </button>
+          <button
+            className='px-3 py-1 mx-1 text-sm font-semibold text-gray-700 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500'
+            onClick={handlePreviousPage}
+            disabled={page === 1}
+          >
+            &lt; Previous
+          </button>
+          <div className='flex items-center mx-2'>
+            Page{' '}
+            <input
+              type='number'
+              value={page}
+              onChange={handlePageChange}
+              onBlur={handlePageChange}
+              className='w-12 px-2 py-1 mx-1 text-sm font-semibold text-center text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500'
+              min={1}
+              max={doctors.last_page}
+            />{' '}
+            of {doctors.last_page}
+          </div>
+          <button
+            className='px-3 py-1 mx-1 text-sm font-semibold text-gray-700 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500'
+            onClick={handleNextPage}
+            disabled={isPreviousData || doctors.last_page <= page}
+          >
+            Next &gt;
+          </button>
+          <button
+            className='px-3 py-1 mx-1 text-sm font-semibold text-gray-700 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500'
+            onClick={handleLastPage}
+            disabled={isPreviousData || doctors.last_page <= page}
+          >
+            Last &gt;&gt;
+          </button>
+          <select
+            value={perPage}
+            onChange={handlePerPageChange}
+            className='px-3 py-1 ml-4 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500'
+          >
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+            <option value={50}>50</option>
+            <option value={100}>100</option>
+          </select>
         </div>
       </div>
       <Modal
