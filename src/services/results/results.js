@@ -1,8 +1,10 @@
 import instance from '../axios';
 
-export const getResults = async () => {
-  const { data } = await instance.get('api/test-results');
-  return data;
+export const getResults = async (page = 1, perPage = 10) => {
+  const { data } = await instance.get(
+    `/api/test-results?page=${page}&per_page=${perPage}`,
+  );
+  return data.data;
 };
 
 export const deleteResult = async (id) => {
