@@ -4,11 +4,15 @@ import { Link } from 'react-router-dom';
 import AsyncSelect from 'react-select/async';
 
 import Modal from '../../../components/Modal';
+import SearchInput from '../../../components/searchInput';
 import TextInput from '../../../components/TextInput';
+import useSearch from '../../../hooks/useSearch';
 
 import { useManageTestResults } from './useManageTestResults';
 
 const ManageTestResults = () => {
+  const { searchValue, handleSearchChange } = useSearch();
+
   const {
     isModalOpen,
     setIsModalOpen,
@@ -34,7 +38,7 @@ const ManageTestResults = () => {
     perPage,
     handlePerPageChange,
     isPreviousData,
-  } = useManageTestResults();
+  } = useManageTestResults(searchValue);
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -54,6 +58,14 @@ const ManageTestResults = () => {
             A list of all the test results in the clinic.
           </p>
         </div>
+        <div className='sm:flex-none'>
+          <SearchInput
+            searchValue={searchValue}
+            handleSearchChange={handleSearchChange}
+            placeholder='Search Test Results...'
+          />
+        </div>
+
         <div className='mt-4 sm:ml-16 sm:mt-0 sm:flex-none'>
           <button
             onClick={() => setIsModalOpen(true)}
@@ -63,6 +75,7 @@ const ManageTestResults = () => {
           </button>
         </div>
       </div>
+
       <div className='flow-root mt-8'>
         <div className='-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8'>
           <div className='inline-block min-w-full py-2 align-middle'>

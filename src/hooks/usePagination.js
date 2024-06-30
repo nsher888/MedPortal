@@ -13,7 +13,7 @@ const usePagination = (defaultTotalPages = 1, defaultPerPage = 10) => {
     const searchParams = new URLSearchParams(location.search);
     if (newPage) searchParams.set('page', newPage);
     if (newPerPage) searchParams.set('per_page', newPerPage);
-    navigate({ search: searchParams.toString() });
+    navigate(`${location.pathname}?${searchParams.toString()}`);
   };
 
   const handlePreviousPage = () => {
@@ -71,6 +71,7 @@ const usePagination = (defaultTotalPages = 1, defaultPerPage = 10) => {
     handleNextPage,
     handleFirstPage,
     handleLastPage,
+    setPage,
     handlePageChange,
     handlePerPageChange,
   };
