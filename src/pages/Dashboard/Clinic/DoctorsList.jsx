@@ -1,11 +1,15 @@
 import { Link } from 'react-router-dom';
 
 import Modal from '../../../components/Modal';
+import SearchInput from '../../../components/searchInput';
+import useSearch from '../../../hooks/useSearch';
 
 import AddDoctorModal from './AddDoctorModal';
 import { useDoctorList } from './useDoctorList';
 
 export default function DoctorsList() {
+  const { searchValue, handleSearchChange } = useSearch();
+
   const {
     doctors,
     isLoading,
@@ -24,7 +28,7 @@ export default function DoctorsList() {
     page,
     perPage,
     isPreviousData,
-  } = useDoctorList();
+  } = useDoctorList(searchValue);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -47,6 +51,13 @@ export default function DoctorsList() {
           <p className='mt-2 text-sm text-gray-700'>
             A list of all the doctors in the clinic.
           </p>
+        </div>
+        <div className='sm:flex-none'>
+          <SearchInput
+            searchValue={searchValue}
+            handleSearchChange={handleSearchChange}
+            placeholder='Search Doctors...'
+          />
         </div>
         <div className='mt-4 sm:ml-16 sm:mt-0 sm:flex-none'>
           <button

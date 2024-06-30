@@ -9,7 +9,7 @@ import {
   getDoctorsList,
 } from '../../../services/doctors/doctors';
 
-export const useDoctorList = () => {
+export const useDoctorList = (search) => {
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const {
@@ -31,8 +31,8 @@ export const useDoctorList = () => {
     error,
     isPreviousData,
   } = useQuery(
-    ['doctors', page, perPage],
-    () => getDoctorsList(page, perPage),
+    ['doctors', page, perPage, search],
+    () => getDoctorsList(page, perPage, search),
     {
       keepPreviousData: true,
       onSuccess: (data) => {

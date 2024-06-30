@@ -7,15 +7,17 @@ import { useAuth } from '../../../hooks/useAuth';
 import usePagination from '../../../hooks/usePagination';
 import { getAllDoctors } from '../../../services/doctors/doctors';
 import { deleteResult, getResults } from '../../../services/results/results';
-import { storeResult } from '../../../services/results/uploadResults';
 import { getTypes } from '../../../services/shared/types';
 
-export const useManageTestResults = () => {
+import { storeResult } from './../../../services/results/uploadResults';
+
+export const useManageTestResults = (search) => {
   const { profile } = useAuth();
   const isDoctor = profile.roles.includes('doctor');
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [types, setTypes] = useState([]);
+
   const {
     register,
     handleSubmit,
@@ -29,6 +31,7 @@ export const useManageTestResults = () => {
   const {
     page,
     perPage,
+    setPage,
     setTotalPages,
     handlePreviousPage,
     handleNextPage,
@@ -44,16 +47,20 @@ export const useManageTestResults = () => {
     data: results,
     isLoading,
     isPreviousData,
-  } = useQuery(['results', page, perPage], () => getResults(page, perPage), {
-    keepPreviousData: true,
-    onSuccess: (data) => {
-      setTotalPages(data.last_page);
+  } = useQuery(
+    ['results', page, perPage, search],
+    () => getResults(page, perPage, search),
+    {
+      keepPreviousData: true,
+      onSuccess: (data) => {
+        setTotalPages(data.last_page);
+      },
     },
-  });
+  );
 
   const addResultMutation = useMutation(storeResult, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['results', page, perPage]);
+      queryClient.invalidateQueries(['results', page, perPage, search]);
       toast.success('Test result added successfully');
       setIsModalOpen(false);
     },
@@ -61,7 +68,7 @@ export const useManageTestResults = () => {
 
   const deleteResultMutation = useMutation(deleteResult, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['results', page, perPage]);
+      queryClient.invalidateQueries(['results', page, perPage, search]);
       toast.success('Test result deleted successfully');
     },
   });
@@ -141,6 +148,7 @@ export const useManageTestResults = () => {
     loadDoctorOptions,
     isDoctor,
     doctors,
+    setPage,
     types,
     page,
     handlePreviousPage,

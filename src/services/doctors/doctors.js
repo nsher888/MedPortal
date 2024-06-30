@@ -1,9 +1,13 @@
 import instance from '../axios';
 
-export const getDoctorsList = async (page = 1, perPage = 10) => {
-  const response = await instance.get(
-    `api/doctors?page=${page}&per_page=${perPage}`,
-  );
+export const getDoctorsList = async (page = 1, perPage = 10, search) => {
+  const response = await instance.get('api/doctors', {
+    params: {
+      page,
+      per_page: perPage,
+      search,
+    },
+  });
   return response.data;
 };
 

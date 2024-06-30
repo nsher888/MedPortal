@@ -1,9 +1,13 @@
 import instance from '../axios';
 
-export const getResults = async (page = 1, perPage = 10) => {
-  const { data } = await instance.get(
-    `/api/test-results?page=${page}&per_page=${perPage}`,
-  );
+export const getResults = async (page = 1, perPage = 10, search) => {
+  const { data } = await instance.get('/api/test-results', {
+    params: {
+      page,
+      per_page: perPage,
+      search,
+    },
+  });
   return data.data;
 };
 
