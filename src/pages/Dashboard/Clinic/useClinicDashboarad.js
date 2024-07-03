@@ -34,15 +34,29 @@ export const useClinicDashboard = (data) => {
     return acc;
   }, {});
 
-  const testTypeLabels = Object.keys(testTypeCounts);
-  const testTypeData = Object.values(testTypeCounts);
+  const sortedTestTypes = Object.entries(testTypeCounts).sort(
+    (a, b) => b[1] - a[1],
+  );
+
+  const topTestTypes = sortedTestTypes.slice(0, 10);
+  const otherTestTypes = sortedTestTypes.slice(10);
+
+  const topTestTypeLabels = topTestTypes.map(([type]) => type);
+  const topTestTypeData = topTestTypes.map(([, count]) => count);
+
+  const otherCount = otherTestTypes.reduce((acc, [, count]) => acc + count, 0);
+
+  if (otherCount > 0) {
+    topTestTypeLabels.push('Other');
+    topTestTypeData.push(otherCount);
+  }
 
   const dataForPieChart = {
-    labels: testTypeLabels,
+    labels: topTestTypeLabels,
     datasets: [
       {
         label: 'Distribution of Test Types',
-        data: testTypeData,
+        data: topTestTypeData,
         backgroundColor: [
           'rgba(66, 135, 245, 0.8)',
           'rgba(245, 66, 101, 0.8)',
@@ -64,7 +78,8 @@ export const useClinicDashboard = (data) => {
   const pieChartOptions = {
     plugins: {
       legend: {
-        display: false,
+        display: true,
+        position: 'left',
       },
     },
     maintainAspectRatio: false,

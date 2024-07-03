@@ -22,6 +22,8 @@ export default function ShowResult() {
     return <p>Error: {error.message}</p>;
   }
 
+  console.log(result);
+
   return (
     <div className='container mx-auto'>
       <h1 className='text-2xl font-bold '></h1>
@@ -89,7 +91,7 @@ export default function ShowResult() {
 
               <dd className='mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2'>
                 <a
-                  href={`${import.meta.env.VITE_BACKEND_URL}${result.testResult}`}
+                  href={result.testResult}
                   target='_blank'
                   className='text-blue-500'
                 >
