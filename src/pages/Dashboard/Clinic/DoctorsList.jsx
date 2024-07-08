@@ -63,7 +63,7 @@ export default function DoctorsList() {
           <button
             type='button'
             onClick={() => setIsModalOpen(true)}
-            className='block px-3 py-2 text-sm font-semibold text-center text-white bg-indigo-600 rounded-md shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+            className='block px-3 py-2 text-sm font-semibold text-center text-white rounded-md shadow-sm bg-customBlue hover:bg-customBlueHover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
           >
             Add Doctor
           </button>
@@ -102,6 +102,16 @@ export default function DoctorsList() {
                 </tr>
               </thead>
               <tbody className='bg-white divide-y divide-gray-200'>
+                {doctors.data.data.length === 0 && (
+                  <tr>
+                    <td
+                      colSpan='4'
+                      className='px-6 py-4 text-sm font-medium text-center text-gray-900'
+                    >
+                      No doctors found
+                    </td>
+                  </tr>
+                )}
                 {doctors.data.data.map((doctor) => (
                   <tr key={doctor.email}>
                     <td className='py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6 lg:pl-8'>

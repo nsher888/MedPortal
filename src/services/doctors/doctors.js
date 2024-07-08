@@ -11,8 +11,10 @@ export const getDoctorsList = async (page = 1, perPage = 10, search) => {
   return response.data;
 };
 
-export const getAllDoctors = async () => {
-  const response = await instance.get('api/doctors/all');
+export const getAllDoctors = async (search = '') => {
+  const response = await instance.get('api/doctors/all', {
+    params: { search },
+  });
   return response.data;
 };
 export const destroyDoctor = async (id) => {
@@ -32,5 +34,15 @@ export const updateDoctor = async (doctor) => {
 
 export const addDoctor = async (doctor) => {
   const response = await instance.post('api/doctors', doctor);
+  return response;
+};
+
+export const getDoctorsSuggestions = async (search) => {
+  const response = await instance.get('api/doctors/suggestions', {
+    params: {
+      search,
+    },
+  });
+  console.log(response);
   return response;
 };
