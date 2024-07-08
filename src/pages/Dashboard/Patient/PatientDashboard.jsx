@@ -104,7 +104,7 @@ const PatientDashboard = () => {
     initialState: {
       pagination: {
         pageIndex: 0,
-        pageSize: 15,
+        pageSize: 10,
       },
     },
     state: {
@@ -171,21 +171,32 @@ const PatientDashboard = () => {
                 ))}
               </thead>
               <tbody className='bg-white divide-y divide-gray-200'>
-                {table.getRowModel().rows.map((row) => (
-                  <tr key={row.id}>
-                    {row.getVisibleCells().map((cell) => (
-                      <td
-                        key={cell.id}
-                        className='py-4 pl-4 pr-3 text-sm text-gray-900 whitespace-nowrap sm:pl-6 lg:pl-8'
-                      >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </td>
-                    ))}
+                {table.getRowModel().rows.length > 0 ? (
+                  table.getRowModel().rows.map((row) => (
+                    <tr key={row.id}>
+                      {row.getVisibleCells().map((cell) => (
+                        <td
+                          key={cell.id}
+                          className='py-4 pl-4 pr-3 text-sm text-gray-900 whitespace-nowrap sm:pl-6 lg:pl-8'
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext(),
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td
+                      colSpan={columns.length}
+                      className='py-4 pl-4 pr-3 text-sm text-center text-gray-500 whitespace-nowrap sm:pl-6 lg:pl-8'
+                    >
+                      No data
+                    </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
             <div className='flex items-center justify-between mt-4'>
@@ -198,9 +209,9 @@ const PatientDashboard = () => {
                 {Math.min(
                   (table.getState().pagination.pageIndex + 1) *
                     table.getState().pagination.pageSize,
-                  data?.length || 0,
+                  table.getFilteredRowModel().rows.length,
                 )}{' '}
-                of {data?.length || 0} results
+                of {table.getFilteredRowModel().rows.length} results
               </div>
               <div className='flex items-center'>
                 <button

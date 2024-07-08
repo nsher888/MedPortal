@@ -1,13 +1,45 @@
-import { useEffect } from 'react';
+import debounce from 'lodash.debounce';
+import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import usePagination from '../hooks/usePagination';
+import { getAllDoctors } from '../services/doctors/doctors';
 
 const SearchInput = ({ searchValue, handleSearchChange, placeholder }) => {
   const navigate = useNavigate();
   const location = useLocation();
-
   const { setPage } = usePagination();
+
+  const [inputValue, setInputValue] = useState(searchValue);
+  const [suggestions, setSuggestions] = useState([]);
+
+  const { refetch } = useQuery(
+    ['doctors', inputValue],
+    () => getAllDoctors(inputValue),
+    {
+      enabled: false,
+      onSuccess: (data) => {
+        setSuggestions(data);
+      },
+    },
+  );
+
+  useEffect(() => {
+    const debouncedFetchSuggestions = debounce((searchTerm) => {
+      if (searchTerm.length > 2) {
+        refetch();
+      } else {
+        setSuggestions([]);
+      }
+    }, 300);
+
+    debouncedFetchSuggestions(inputValue);
+
+    return () => {
+      debouncedFetchSuggestions.cancel();
+    };
+  }, [inputValue, refetch]);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -27,7 +59,14 @@ const SearchInput = ({ searchValue, handleSearchChange, placeholder }) => {
   }, [searchValue, navigate, location.pathname, setPage]);
 
   const clearInput = () => {
+    setInputValue('');
     handleSearchChange({ target: { value: '' } });
+    setSuggestions([]);
+  };
+
+  const handleSearchButtonClick = () => {
+    handleSearchChange({ target: { value: inputValue } });
+    setSuggestions([]);
   };
 
   return (
@@ -36,35 +75,63 @@ const SearchInput = ({ searchValue, handleSearchChange, placeholder }) => {
         Search:
       </label>
       <div className='relative w-full'>
-        <input
-          id='search'
-          type='text'
-          placeholder={placeholder}
-          value={searchValue}
-          onChange={handleSearchChange}
-          className='block w-full px-3 py-2 text-sm border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
-        />
-        {searchValue && (
-          <button
-            type='button'
-            onClick={clearInput}
-            className='absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 focus:outline-none'
-          >
-            <svg
-              className='w-4 h-4'
-              xmlns='http://www.w3.org/2000/svg'
-              viewBox='0 0 20 20'
-              fill='currentColor'
+        <div className='relative flex items-center w-full'>
+          <input
+            id='search'
+            type='text'
+            placeholder={placeholder}
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            className='block w-full py-2 pl-3 pr-10 text-sm border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+          />
+          {inputValue && (
+            <button
+              type='button'
+              onClick={clearInput}
+              className='absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 focus:outline-none'
             >
-              <path
-                fillRule='evenodd'
-                d='M10 8.586l3.293-3.293a1 1 0 111.414 1.414L11.414 10l3.293 3.293a1 1 0 01-1.414 1.414L10 11.414l-3.293 3.293a1 1 0 01-1.414-1.414L8.586 10 5.293 6.707a1 1 0 011.414-1.414L10 8.586z'
-                clipRule='evenodd'
-              />
-            </svg>
-          </button>
+              <svg
+                className='w-4 h-4'
+                xmlns='http://www.w3.org/2000/svg'
+                viewBox='0 0 20 20'
+                fill='currentColor'
+              >
+                <path
+                  fillRule='evenodd'
+                  d='M10 8.586l3.293-3.293a1 1 0 111.414 1.414L11.414 10l3.293 3.293a1 1 0 01-1.414 1.414L10 11.414l-3.293 3.293a1 1 0 01-1.414-1.414L8.586 10 5.293 6.707a1 1 0 011.414-1.414L10 8.586z'
+                  clipRule='evenodd'
+                />
+              </svg>
+            </button>
+          )}
+        </div>
+        {suggestions.length > 0 && (
+          <ul className='absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg'>
+            {suggestions.map((doctor) => (
+              <li
+                key={doctor.id}
+                className='px-4 py-2 cursor-pointer hover:bg-gray-200'
+                onClick={() => {
+                  setInputValue(`${doctor.name} ${doctor.surname}`);
+                  handleSearchChange({
+                    target: { value: `${doctor.name} ${doctor.surname}` },
+                  });
+                  setSuggestions([]);
+                }}
+              >
+                {doctor.name} {doctor.surname}
+              </li>
+            ))}
+          </ul>
         )}
       </div>
+      <button
+        type='button'
+        onClick={handleSearchButtonClick}
+        className='px-4 py-2 ml-2 text-sm text-white rounded-md bg-customBlue hover:bg-customBlueHover focus:outline-none'
+      >
+        Search
+      </button>
     </div>
   );
 };

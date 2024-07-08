@@ -41,7 +41,7 @@ const AddDoctorModal = ({ onSubmit, onClose }) => {
       <div className='mt-5 sm:mt-4 sm:flex sm:flex-row-reverse'>
         <button
           type='submit'
-          className='inline-flex justify-center w-full px-3 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md shadow-sm hover:bg-indigo-500 sm:ml-3 sm:w-auto'
+          className='inline-flex justify-center w-full px-3 py-2 text-sm font-semibold text-white rounded-md shadow-sm bg-customBlue hover:bg-customBlueHover sm:ml-3 sm:w-auto'
         >
           Add Doctor
         </button>
