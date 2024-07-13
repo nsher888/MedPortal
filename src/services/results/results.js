@@ -25,3 +25,12 @@ export const updateResult = async (result) => {
   const { data } = await instance.post(`api/test-results/${result.id}`, result);
   return data;
 };
+
+export const getResultsSuggestions = async (search) => {
+  const response = await instance.get('api/test-results/suggestions', {
+    params: {
+      search,
+    },
+  });
+  return response.data;
+};
