@@ -14,4 +14,9 @@ export const routes = {
     url: 'manage-test-results',
     icon: '📊',
   },
+  patientBooking: {
+    name: 'Appointment Booking',
+    url: 'patientbooking',
+    icon: '📅',
+  },
 };

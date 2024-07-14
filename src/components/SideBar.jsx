@@ -18,7 +18,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, roles }) {
       } else if (roles.includes('doctor')) {
         items.push(routes.dashboard, routes.manageTestResults);
       } else if (roles.includes('patient')) {
-        items.push(routes.dashboard);
+        items.push(routes.dashboard, routes.patientBooking);
       }
 
       return items;

@@ -57,3 +57,8 @@ export const doctorsList = async () => {
     throw error;
   }
 };
+
+export const getClinicDoctors = async (clinicId) => {
+  const response = await instance.get(`api/clinics/${clinicId}/doctors`);
+  return response.data;
+};

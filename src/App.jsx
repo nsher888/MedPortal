@@ -10,6 +10,7 @@ import DoctorsList from './pages/Dashboard/Clinic/DoctorsList';
 import ManageTestResults from './pages/Dashboard/Clinic/ManageTestResults';
 import ShowResult from './pages/Dashboard/Clinic/ShowResult';
 import Dashboard from './pages/Dashboard/Dashboard';
+import PatientBooking from './pages/Dashboard/Patient/PatientBooking';
 import Profile from './pages/Dashboard/Profile/Profile';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 import ResetPassword from './pages/ForgotPassword/ResetPassword';
@@ -36,6 +37,7 @@ function App() {
           <Route path='doctors-list' element={<DoctorsList />} />
           <Route path='doctors/:id' element={<DoctorDetail />} />
           <Route path='profile' element={<Profile />} />;
+          <Route path='patientbooking' element={<PatientBooking />} />;
           <Route path='manage-test-results' element={<ManageTestResults />} />
           <Route path='manage-test-results/:id' element={<ShowResult />} />
         </Route>
