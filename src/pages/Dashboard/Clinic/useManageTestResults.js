@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 import { useAuth } from '../../../hooks/useAuth';
 import usePagination from '../../../hooks/usePagination';
-import { getAllDoctors } from '../../../services/doctors/doctors';
+import { doctorsList } from '../../../services/doctors/doctors';
 import { deleteResult, getResults } from '../../../services/results/results';
 import { getTypes } from '../../../services/shared/types';
 
@@ -26,7 +26,7 @@ export const useManageTestResults = (search) => {
     formState: { errors },
   } = useForm();
 
-  const { data: doctors } = useQuery('doctors', getAllDoctors);
+  const { data: doctors } = useQuery('doctorsList', doctorsList);
 
   const {
     page,

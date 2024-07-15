@@ -17,6 +17,7 @@ export const getAllDoctors = async (search = '') => {
   });
   return response.data;
 };
+
 export const destroyDoctor = async (id) => {
   const response = await instance.delete(`api/doctors/${id}`);
   return response;
@@ -45,4 +46,19 @@ export const getDoctorsSuggestions = async (search) => {
   });
   console.log(response);
   return response;
+};
+
+export const doctorsList = async () => {
+  try {
+    const response = await instance.get('api/doctor-list');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching doctors list:', error);
+    throw error;
+  }
+};
+
+export const getClinicDoctors = async (clinicId) => {
+  const response = await instance.get(`api/clinics/${clinicId}/doctors`);
+  return response.data;
 };

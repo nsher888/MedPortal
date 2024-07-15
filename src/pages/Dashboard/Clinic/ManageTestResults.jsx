@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import AsyncSelect from 'react-select/async';
 
 import Modal from '../../../components/Modal';
-import SearchInput from '../../../components/searchInput';
+import ResultsSearchInput from '../../../components/ResultsSearchInput';
 import TextInput from '../../../components/TextInput';
 import useSearch from '../../../hooks/useSearch';
 
@@ -59,7 +59,7 @@ const ManageTestResults = () => {
           </p>
         </div>
         <div className='sm:flex-none'>
-          <SearchInput
+          <ResultsSearchInput
             searchValue={searchValue}
             handleSearchChange={handleSearchChange}
             placeholder='Search Test Results...'
