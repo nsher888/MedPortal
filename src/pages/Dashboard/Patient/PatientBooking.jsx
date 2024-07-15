@@ -1,101 +1,40 @@
-import { useState } from 'react';
-import { useQuery } from 'react-query';
-
 import Modal from '../../../components/Modal';
 import TimeSlotList from '../../../components/TimeSlotList';
 import ViewAppointments from '../../../components/ViewAppointments';
-import { getAvailableDates } from '../../../services/booking/availabilities';
-import { getClinicDoctors } from '../../../services/doctors/doctors';
-import { getAllClinics } from '../../../services/patient/patient';
+
+import usePatientBooking from './usePatientBooking';
 
 const PatientBooking = () => {
-  const [clinicId, setClinicId] = useState('');
-  const [doctorId, setDoctorId] = useState('');
-  const [date, setDate] = useState('');
-  const [step, setStep] = useState(1);
-  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
-  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   const {
-    data: clinics,
-    isLoading: clinicsLoading,
-    error: clinicsError,
-  } = useQuery('clinics', getAllClinics);
-
-  const {
-    data: doctors,
-    isLoading: doctorsLoading,
-    error: doctorsError,
-  } = useQuery(['doctors', clinicId], () => getClinicDoctors(clinicId), {
-    enabled: !!clinicId,
-  });
-
-  const { data: availableDates } = useQuery(
-    ['availableDates', doctorId],
-    () => getAvailableDates(doctorId),
-    {
-      enabled: !!doctorId,
-    },
-  );
-
-  const handleNextStep = () => setStep(step + 1);
-  const handlePreviousStep = () => setStep(step - 1);
-
-  const handleOpenModal = () => setIsModalOpen(true);
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setClinicId('');
-    setDoctorId('');
-    setDate('');
-    setStep(1);
-    setSelectedMonth(new Date().getMonth());
-    setSelectedYear(new Date().getFullYear());
-  };
-
-  const handleAppointmentBooked = () => {
-    handleCloseModal();
-  };
-
-  const generateDates = () => {
-    const dates = [];
-    const today = new Date();
-    const startDate = new Date(selectedYear, selectedMonth, 1);
-    const endDate = new Date(selectedYear, selectedMonth + 1, 0);
-
-    for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
-      if (d >= today) {
-        dates.push(new Date(d));
-      }
-    }
-    return dates;
-  };
-
-  const dates = generateDates();
-
-  const isDateAvailable = (date) => {
-    return availableDates?.includes(date);
-  };
-
-  const monthNames = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
-
-  const currentMonth = new Date().getMonth();
-  const currentYear = new Date().getFullYear();
-
-  const filteredMonths = monthNames.slice(currentMonth);
+    clinicId,
+    setClinicId,
+    doctorId,
+    setDoctorId,
+    date,
+    setDate,
+    step,
+    handleNextStep,
+    handlePreviousStep,
+    isModalOpen,
+    handleOpenModal,
+    handleCloseModal,
+    handleAppointmentBooked,
+    clinics,
+    clinicsLoading,
+    clinicsError,
+    doctors,
+    doctorsLoading,
+    doctorsError,
+    filteredMonths,
+    dates,
+    isDateAvailable,
+    selectedMonth,
+    setSelectedMonth,
+    setSelectedYear,
+    currentMonth,
+    currentYear,
+    availableDates,
+  } = usePatientBooking();
 
   if (clinicsLoading)
     return <div className='text-center text-gray-600'>Loading clinics...</div>;
@@ -222,14 +161,17 @@ const PatientBooking = () => {
                 <span className='text-gray-700'>Date:</span>
                 <div className='flex py-2 space-x-2 overflow-x-auto'>
                   {dates.map((d) => {
-                    const formattedDate = d.toISOString().split('T')[0];
-                    const available = isDateAvailable(formattedDate);
+                    const tbilisiDate = new Date(d).toLocaleDateString(
+                      'en-CA',
+                      { timeZone: 'Asia/Tbilisi' },
+                    );
+                    const available = isDateAvailable(tbilisiDate);
                     return (
                       <button
                         key={d.toDateString()}
-                        onClick={() => setDate(formattedDate)}
-                        className={`px-3 py-2 text-sm rounded-md ${
-                          date === formattedDate
+                        onClick={() => setDate(tbilisiDate)}
+                        className={`px-3 py-2 text-sm rounded-md min-h-24 ${
+                          date === tbilisiDate
                             ? 'bg-blue-500 text-white'
                             : available
                               ? 'bg-gray-200 text-gray-700'
@@ -237,7 +179,9 @@ const PatientBooking = () => {
                         }`}
                         disabled={!available}
                       >
-                        {d.toDateString()}
+                        {d.toLocaleDateString('en-CA', {
+                          timeZone: 'Asia/Tbilisi',
+                        })}
                       </button>
                     );
                   })}

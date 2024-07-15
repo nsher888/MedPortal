@@ -14,13 +14,21 @@ const AvailabilityForm = ({ selectedDate, onClose }) => {
   const { useSetAvailability } = useAppointments();
   const { mutate } = useSetAvailability();
 
+  const toLocalISOString = (date) => {
+    const tzoffset = date.getTimezoneOffset() * 60000;
+    const localISOTime = new Date(date - tzoffset).toISOString().slice(0, -1);
+    return localISOTime.split('T')[0];
+  };
+
   useEffect(() => {
     if (selectedDate) {
-      setValue('date', selectedDate.toISOString().split('T')[0]);
+      console.log('Original selected date:', selectedDate);
+      setValue('date', toLocalISOString(selectedDate));
     }
   }, [selectedDate, setValue]);
 
   const onSubmit = (data) => {
+    console.log('Form data before mutation:', data);
     mutate({
       date: data.date,
       start_time: data.startTime,
@@ -33,7 +41,7 @@ const AvailabilityForm = ({ selectedDate, onClose }) => {
     <div className='max-w-lg p-6 mx-auto bg-white rounded-lg shadow-md'>
       <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
         <div className='mb-4 text-lg font-semibold text-center'>
-          Selected Date: {selectedDate?.toISOString().split('T')[0]}
+          Selected Date: {selectedDate.toDateString()}
         </div>
         <div className='flex flex-col'>
           <label className='mb-2 font-medium text-gray-700'>Date:</label>

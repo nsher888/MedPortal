@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import Calendar from 'react-calendar';
 
 import 'react-calendar/dist/Calendar.css';
@@ -6,44 +5,27 @@ import AvailabilityForm from '../../../components/AvailabilityForm';
 import Modal from '../../../components/Modal';
 import MultiDateAvailabilityForm from '../../../components/MultiDateAvailabilityForm';
 
+import useDoctorDashboard from './useDoctorDashboard';
 import '../../../css/DoctorDashboard.css';
-import { fetchAvailabilities } from '../../../services/booking/availabilities';
-
-import { useQuery } from 'react-query';
 
 const DoctorDashboard = () => {
-  const [date, setDate] = useState(new Date());
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isMultiDateModalOpen, setIsMultiDateModalOpen] = useState(false);
-
   const {
-    data: availabilities,
+    date,
+    isModalOpen,
+    isMultiDateModalOpen,
+    setIsMultiDateModalOpen,
+    currentAvailabilityId,
     isLoading,
     error,
-  } = useQuery('availabilities', fetchAvailabilities);
+    handleDateChange,
+    handleCloseModal,
+    handleCloseMultiDateModal,
+    getAvailabilityForDate,
+    handleCancelAvailability,
+  } = useDoctorDashboard();
 
-  const handleDateChange = (date) => {
-    setDate(date);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleCloseMultiDateModal = () => {
-    setIsMultiDateModalOpen(false);
-  };
-
-  const getAvailabilityForDate = (date) => {
-    if (!availabilities) return null;
-    const dateString = date.toISOString().split('T')[0];
-    const availability = availabilities.find(
-      (avail) => avail.date === dateString,
-    );
-    return availability
-      ? `${availability.start_time.slice(0, 5)} - ${availability.end_time.slice(0, 5)}`
-      : null;
+  const tileDisabled = ({ date, view }) => {
+    return view === 'month' && date < new Date().setHours(0, 0, 0, 0);
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -74,6 +56,7 @@ const DoctorDashboard = () => {
             <Calendar
               onChange={handleDateChange}
               value={date}
+              tileDisabled={tileDisabled}
               tileContent={({ date }) => {
                 const availabilityTime = getAvailabilityForDate(date);
                 return availabilityTime ? (
@@ -91,7 +74,16 @@ const DoctorDashboard = () => {
             isOpen={isModalOpen}
             onClose={handleCloseModal}
             title='Set Availability'
-            footer={null}
+            footer={
+              currentAvailabilityId && (
+                <button
+                  onClick={handleCancelAvailability}
+                  className='px-4 py-2 font-bold text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
+                >
+                  Cancel Availability for the Day
+                </button>
+              )
+            }
             className='p-6 bg-white rounded-lg shadow-lg'
           >
             <AvailabilityForm selectedDate={date} onClose={handleCloseModal} />
