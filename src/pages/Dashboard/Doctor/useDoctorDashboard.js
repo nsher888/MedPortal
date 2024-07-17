@@ -1,10 +1,14 @@
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-
 import {
   cancelAvailability,
+  cancelTimeSlot,
   fetchAvailabilities,
+  fetchDoctorTimeslots,
+  toggleTimeSlotAvailability,
 } from '../../../services/booking/availabilities';
+import { useAuth } from './../../../hooks/useAuth';
+import { format } from 'date-fns';
 
 const useDoctorDashboard = () => {
   const [date, setDate] = useState(new Date());
@@ -68,12 +72,55 @@ const useDoctorDashboard = () => {
     }
   };
 
+  const { profile } = useAuth();
+  const doctorId = profile?.id;
+  const formattedDate = format(new Date(date), 'yyyy-MM-dd');
+
+  const [availabilityModal, setAvailabilityModal] = useState(false);
+
+  const handleAvailablityModal = () => {
+    setAvailabilityModal(true);
+  };
+
+  const { data: timeSlots } = useQuery(
+    ['timeSlots', doctorId, formattedDate],
+    () => fetchDoctorTimeslots(formattedDate),
+    {
+      enabled: !!doctorId && !!formattedDate,
+    },
+  );
+
+  const cancelTimeSlotMutation = useMutation(cancelTimeSlot, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['timeSlots', doctorId, formattedDate]);
+    },
+  });
+
+  const toggleTimeSlotMutation = useMutation(toggleTimeSlotAvailability, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['timeSlots', doctorId, formattedDate]);
+    },
+  });
+
+  const handleCancelBooking = (id) => {
+    cancelTimeSlotMutation.mutate(id);
+  };
+
+  const toggleTimeSlotStatus = (id) => {
+    toggleTimeSlotMutation.mutate(id);
+  };
+
   return {
     date,
     setDate,
     isModalOpen,
+    timeSlots,
+    handleCancelBooking,
+    handleAvailablityModal,
+    availabilityModal,
     setIsModalOpen,
     isMultiDateModalOpen,
+    toggleTimeSlotStatus,
     setIsMultiDateModalOpen,
     currentAvailabilityId,
     setCurrentAvailabilityId,
@@ -81,6 +128,7 @@ const useDoctorDashboard = () => {
     isLoading,
     error,
     handleDateChange,
+    setAvailabilityModal,
     handleCloseModal,
     handleCloseMultiDateModal,
     getAvailabilityForDate,

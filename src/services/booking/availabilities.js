@@ -35,6 +35,23 @@ export const fetchTimeSlots = async (doctorId, date) => {
   return response.data;
 };
 
+export const fetchDoctorTimeslots = async (date) => {
+  const response = await instance.get('/api/time-slots/doctor', {
+    params: { date },
+  });
+  return response.data;
+};
+
+export const cancelTimeSlot = async (id) => {
+  const response = await instance.delete(`/api/time-slots/${id}`);
+  return response;
+};
+
+export const toggleTimeSlotAvailability = async (id) => {
+  const response = await instance.post(`/api/time-slots/${id}`);
+  return response;
+};
+
 export const fetchAppointments = async () => {
   const response = await instance.get('/api/appointments');
   return response.data;

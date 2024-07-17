@@ -1,5 +1,4 @@
 import Calendar from 'react-calendar';
-
 import 'react-calendar/dist/Calendar.css';
 import AvailabilityForm from '../../../components/AvailabilityForm';
 import Modal from '../../../components/Modal';
@@ -19,6 +18,12 @@ const DoctorDashboard = () => {
     error,
     handleDateChange,
     handleCloseModal,
+    timeSlots,
+    availabilityModal,
+    toggleTimeSlotStatus,
+    handleCancelBooking,
+    setAvailabilityModal,
+    handleAvailablityModal,
     handleCloseMultiDateModal,
     getAvailabilityForDate,
     handleCancelAvailability,
@@ -76,17 +81,117 @@ const DoctorDashboard = () => {
             title='Set Availability'
             footer={
               currentAvailabilityId && (
-                <button
-                  onClick={handleCancelAvailability}
-                  className='px-4 py-2 font-bold text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
-                >
-                  Cancel Availability for the Day
-                </button>
+                <div className='flex items-center justify-between gap-8'>
+                  <button
+                    onClick={handleAvailablityModal}
+                    className='px-4 py-2 font-bold text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
+                  >
+                    View Time Slots
+                  </button>
+                  <button
+                    onClick={handleCancelAvailability}
+                    className='px-4 py-2 font-bold text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
+                  >
+                    Cancel Availability for the Day
+                  </button>
+                </div>
               )
             }
             className='p-6 bg-white rounded-lg shadow-lg'
           >
             <AvailabilityForm selectedDate={date} onClose={handleCloseModal} />
+          </Modal>
+
+          <Modal
+            isOpen={availabilityModal}
+            onClose={() => setAvailabilityModal(false)}
+            title='Time Slots for the Day'
+            footer={null}
+            className='max-w-3xl p-6 overflow-y-auto bg-white rounded-lg shadow-lg max-h-[70vh]'
+          >
+            <div className='mt-2'>
+              {timeSlots && timeSlots.length > 0 ? (
+                <div className='overflow-x-auto'>
+                  <table className='min-w-full divide-y divide-gray-200'>
+                    <thead>
+                      <tr>
+                        <th className='px-6 py-3 text-xs font-medium tracking-wider text-gray-500 uppercase'>
+                          Time
+                        </th>
+                        <th className='px-6 py-3 text-xs font-medium tracking-wider text-gray-500 uppercase'>
+                          Status
+                        </th>
+                        <th className='px-6 py-3 text-xs font-medium tracking-wider text-gray-500 uppercase'>
+                          Patient
+                        </th>
+                        <th className='px-6 py-3 text-xs font-medium tracking-wider text-gray-500 uppercase'>
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className='bg-white divide-y divide-gray-200'>
+                      {timeSlots.map((slot) => (
+                        <tr key={slot.id} className='hover:bg-gray-100'>
+                          <td className='px-6 py-4 text-sm text-gray-900 whitespace-nowrap'>
+                            {slot.start_time}
+                          </td>
+                          <td className='px-6 py-4 text-sm whitespace-nowrap'>
+                            <span
+                              className={`px-2 py-1 font-bold rounded-full capitalize ${
+                                slot.status === 'booked'
+                                  ? 'bg-red-100 text-red-800'
+                                  : slot.status === 'free'
+                                    ? 'bg-green-100 text-green-800'
+                                    : 'bg-gray-100 text-gray-800'
+                              }`}
+                            >
+                              {slot.status}
+                            </span>
+                          </td>
+                          <td className='px-6 py-4 text-sm text-gray-900 whitespace-nowrap'>
+                            {slot.status === 'booked'
+                              ? `${slot.patient_name} ${slot.patient_surname}`
+                              : 'N/A'}
+                          </td>
+                          <td className='px-6 py-4 text-sm text-gray-900 whitespace-nowrap'>
+                            {slot.status === 'booked' && (
+                              <button
+                                onClick={() => handleCancelBooking(slot.id)}
+                                className='px-4 py-2 font-bold text-white bg-red-500 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
+                              >
+                                Cancel
+                              </button>
+                            )}
+
+                            {slot.status === 'free' && (
+                              <button
+                                onClick={() => toggleTimeSlotStatus(slot.id)}
+                                className='px-4 py-2 font-bold text-white bg-red-500 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
+                              >
+                                Make Unavailable
+                              </button>
+                            )}
+
+                            {slot.status === 'unavailable' && (
+                              <button
+                                onClick={() => toggleTimeSlotStatus(slot.id)}
+                                className='px-4 py-2 font-bold text-white bg-green-500 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
+                              >
+                                Make Available
+                              </button>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <div className='text-center text-gray-700'>
+                  No available time slots
+                </div>
+              )}
+            </div>
           </Modal>
           <Modal
             isOpen={isMultiDateModalOpen}
