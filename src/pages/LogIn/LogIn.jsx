@@ -2,9 +2,11 @@ import { Link } from 'react-router-dom';
 
 import TextInput from '../../components/TextInput';
 import useLogIn from '../../hooks/useLogIn';
+import usePageTitle from '../../hooks/usePageTitle';
 
 const LogIn = () => {
   const { register, handleSubmit, errors, backendError, onSubmit } = useLogIn();
+  usePageTitle('Log In');
 
   return (
     <div className='min-h-full'>

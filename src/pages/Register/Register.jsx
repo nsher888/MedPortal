@@ -1,10 +1,13 @@
 import useRegister from '@/hooks/useRegister';
 
 import TextInput from '../../components/TextInput';
+import usePageTitle from '../../hooks/usePageTitle';
 
 const Register = () => {
   const { register, handleSubmit, errors, backendError, onSubmit, watch } =
     useRegister();
+
+  usePageTitle('Sign Up');
 
   return (
     <div className='min-h-full'>

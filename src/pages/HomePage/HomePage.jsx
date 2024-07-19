@@ -1,9 +1,12 @@
+import { Link } from 'react-router-dom';
+
 import HomePageImg from '@/assets/homepage-img.png';
 
 import { Button, Services, Testimonials } from './components';
-import { Link } from 'react-router-dom';
+import usePageTitle from '../../hooks/usePageTitle';
 
 const HomePage = () => {
+  usePageTitle('MedPortal');
   return (
     <>
       <section className='grid items-center grid-cols-1 gap-10 p-4 md:grid-cols-2'>

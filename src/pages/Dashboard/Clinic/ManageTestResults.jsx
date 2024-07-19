@@ -9,9 +9,11 @@ import TextInput from '../../../components/TextInput';
 import useSearch from '../../../hooks/useSearch';
 
 import { useManageTestResults } from './useManageTestResults';
+import usePageTitle from '../../../hooks/usePageTitle';
 
 const ManageTestResults = () => {
   const { searchValue, handleSearchChange } = useSearch();
+  usePageTitle('Test Results');
 
   const {
     isModalOpen,

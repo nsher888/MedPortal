@@ -6,9 +6,11 @@ import useSearch from '../../../hooks/useSearch';
 
 import AddDoctorModal from './AddDoctorModal';
 import { useDoctorList } from './useDoctorList';
+import usePageTitle from '../../../hooks/usePageTitle';
 
 export default function DoctorsList() {
   const { searchValue, handleSearchChange } = useSearch();
+  usePageTitle('Doctors');
 
   const {
     doctors,

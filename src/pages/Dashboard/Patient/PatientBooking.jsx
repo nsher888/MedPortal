@@ -1,6 +1,7 @@
 import Modal from '../../../components/Modal';
 import TimeSlotList from '../../../components/TimeSlotList';
 import ViewAppointments from '../../../components/ViewAppointments';
+import usePageTitle from '../../../hooks/usePageTitle';
 
 import usePatientBooking from './usePatientBooking';
 
@@ -35,6 +36,8 @@ const PatientBooking = () => {
     currentYear,
     availableDates,
   } = usePatientBooking();
+
+  usePageTitle('Book Appointment');
 
   if (clinicsLoading)
     return <div className='text-center text-gray-600'>Loading clinics...</div>;

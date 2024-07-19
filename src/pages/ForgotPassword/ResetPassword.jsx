@@ -4,12 +4,15 @@ import { toast } from 'react-toastify';
 
 import TextInput from '../../components/TextInput';
 import { resetPassword } from '../../services/session/resetPassword';
+import usePageTitle from '../../hooks/usePageTitle';
 
 const ResetPassword = () => {
   const { token } = useParams();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const email = searchParams.get('email');
+
+  usePageTitle('Reset Password');
 
   const {
     register,

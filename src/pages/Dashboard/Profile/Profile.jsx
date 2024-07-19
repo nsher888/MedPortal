@@ -1,3 +1,4 @@
+import usePageTitle from '../../../hooks/usePageTitle';
 import useProfile from './useProfile';
 
 const Profile = () => {
@@ -13,6 +14,8 @@ const Profile = () => {
     onPasswordChange,
     onUpdateProfile,
   } = useProfile();
+
+  usePageTitle('Profile');
 
   if (isLoading) {
     return <p>Loading...</p>;

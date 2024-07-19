@@ -23,7 +23,7 @@ const Modal = ({ isOpen, onClose, title, children, footer, className }) => {
       <div className='fixed inset-0 z-10 flex items-center justify-center p-4 overflow-y-auto'>
         <div
           ref={modalRef}
-          className={`relative bg-white rounded-lg shadow-xl sm:my-8 inline-block md:ml-72 min-w-80 md:min-w-[400px] align-middle ${className} max-w-full p-6`}
+          className={`relative bg-white rounded-lg shadow-xl sm:my-8 inline-block md:ml-72 min-w-80 md:min-w-[400px] align-middle ${className} max-w-full md:max-w-4xl p-6`}
           style={{ width: 'auto' }}
         >
           <div className='absolute top-0 right-0 hidden pt-4 pr-4 sm:block'>
