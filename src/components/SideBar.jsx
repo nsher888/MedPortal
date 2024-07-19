@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import { routes } from '../routes';
 
 export default function Sidebar({ sidebarOpen, setSidebarOpen, roles }) {
   const [sidebarItems, setSidebarItems] = useState([]);
+  const sidebarRef = useRef(null);
 
   useEffect(() => {
     const getSidebarItems = () => {
@@ -27,6 +28,24 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, roles }) {
     setSidebarItems(getSidebarItems());
   }, [roles]);
 
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        setSidebarOpen(false);
+      }
+    };
+
+    if (sidebarOpen) {
+      document.addEventListener('mousedown', handleOutsideClick);
+    } else {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, [sidebarOpen, setSidebarOpen]);
+
   return (
     <>
       {sidebarOpen && (
@@ -36,7 +55,10 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, roles }) {
             onClick={() => setSidebarOpen(false)}
           />
           <div className='fixed inset-0 flex'>
-            <div className='relative flex flex-1 w-full max-w-xs mr-16 transition-transform transform'>
+            <div
+              className='relative flex flex-1 w-full max-w-xs mr-16 transition-transform transform'
+              ref={sidebarRef}
+            >
               <div className='absolute top-0 flex justify-center w-16 pt-5 left-full'>
                 <button
                   type='button'
@@ -62,6 +84,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, roles }) {
                             <NavLink
                               to={item.url}
                               end={item.url === '/dashboard'}
+                              onClick={() => setSidebarOpen(false)}
                               className={({ isActive }) =>
                                 isActive
                                   ? 'flex p-2 text-sm font-semibold leading-6 text-white rounded-md bg-indigo-600 group gap-x-3'
@@ -76,21 +99,6 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, roles }) {
                           </li>
                         ))}
                       </ul>
-                    </li>
-                    <li className='mt-auto'>
-                      <NavLink
-                        to='/settings'
-                        className={({ isActive }) =>
-                          isActive
-                            ? 'flex p-2 -mx-2 text-sm font-semibold leading-6 text-white rounded-md bg-indigo-600 group gap-x-3'
-                            : 'flex p-2 -mx-2 text-sm font-semibold leading-6 text-gray-700 rounded-md group gap-x-3 hover:bg-gray-50 hover:text-indigo-600'
-                        }
-                      >
-                        <div className='w-6 h-6 text-gray-400 shrink-0 group-hover:text-indigo-600'>
-                          ⚙️
-                        </div>
-                        Settings
-                      </NavLink>
                     </li>
                   </ul>
                 </nav>
