@@ -1,9 +1,13 @@
 import useRegister from '@/hooks/useRegister';
 
 import TextInput from '../../components/TextInput';
+import usePageTitle from '../../hooks/usePageTitle';
 
 const Register = () => {
-  const { register, handleSubmit, errors, onSubmit, watch } = useRegister();
+  const { register, handleSubmit, errors, backendError, onSubmit, watch } =
+    useRegister();
+
+  usePageTitle('Sign Up');
 
   return (
     <div className='min-h-full'>
@@ -19,6 +23,10 @@ const Register = () => {
             <div className='mt-10'>
               <div>
                 <form onSubmit={handleSubmit(onSubmit)}>
+                  {backendError && (
+                    <div className='mb-4 text-red-600'>{backendError}</div>
+                  )}
+
                   <TextInput
                     label='Name'
                     name='name'

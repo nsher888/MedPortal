@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,7 +9,6 @@ import { useAuth } from './useAuth';
 
 const useRegister = () => {
   const { getProfile } = useAuth();
-
   const {
     register,
     handleSubmit,
@@ -16,16 +16,21 @@ const useRegister = () => {
     watch,
   } = useForm();
 
+  const [backendError, setBackendError] = useState(null);
+
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
     try {
+      setBackendError(null);
       await getCSRFToken();
       await registerUser(data);
       await getProfile();
       navigate('/dashboard');
     } catch (error) {
-      console.error(error);
+      setBackendError(
+        error.response?.data?.message || 'An error occurred. Please try again.',
+      );
     }
   };
 
@@ -33,6 +38,7 @@ const useRegister = () => {
     register,
     handleSubmit,
     errors,
+    backendError,
     onSubmit,
     watch,
   };

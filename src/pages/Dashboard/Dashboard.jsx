@@ -1,6 +1,7 @@
 import { useQuery } from 'react-query';
 
 import { useAuth } from '../../hooks/useAuth';
+import usePageTitle from '../../hooks/usePageTitle';
 
 import { getClinicStatistics } from './../../services/clinic/getClinicStatistics';
 import ClinicDashboard from './Clinic/ClinicDashboard';
@@ -13,6 +14,7 @@ const Dashboard = () => {
     getClinicStatistics,
   );
   const { profile } = useAuth();
+  usePageTitle('Dashboard');
 
   if (isLoading) {
     return <p>Loading...</p>;

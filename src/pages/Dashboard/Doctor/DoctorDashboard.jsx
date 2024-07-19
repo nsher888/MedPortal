@@ -107,7 +107,7 @@ const DoctorDashboard = () => {
             onClose={() => setAvailabilityModal(false)}
             title='Time Slots for the Day'
             footer={null}
-            className='max-w-3xl p-6 overflow-y-auto bg-white rounded-lg shadow-lg max-h-[70vh]'
+            className='p-6 overflow-y-auto bg-white rounded-lg shadow-lg max-h-[70vh]'
           >
             <div className='mt-2'>
               {timeSlots && timeSlots.length > 0 ? (

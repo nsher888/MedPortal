@@ -1,6 +1,7 @@
 import Modal from '../../../components/Modal';
 import TimeSlotList from '../../../components/TimeSlotList';
 import ViewAppointments from '../../../components/ViewAppointments';
+import usePageTitle from '../../../hooks/usePageTitle';
 
 import usePatientBooking from './usePatientBooking';
 
@@ -36,6 +37,8 @@ const PatientBooking = () => {
     availableDates,
   } = usePatientBooking();
 
+  usePageTitle('Book Appointment');
+
   if (clinicsLoading)
     return <div className='text-center text-gray-600'>Loading clinics...</div>;
   if (clinicsError)
@@ -62,11 +65,11 @@ const PatientBooking = () => {
         title='Book an Appointment'
         className={step === 3 ? 'max-w-4xl' : 'max-w-lg'}
         footer={
-          <div className='flex justify-between mt-4'>
+          <div className='flex justify-between gap-4 mt-4'>
             {step > 1 && (
               <button
                 onClick={handlePreviousStep}
-                className='px-2 py-1 text-white transition-colors bg-gray-500 rounded-md hover:bg-gray-600'
+                className='px-4 py-2 text-white transition-colors bg-gray-500 rounded-md hover:bg-gray-600'
               >
                 Back
               </button>
@@ -74,7 +77,7 @@ const PatientBooking = () => {
             {step < 3 && (
               <button
                 onClick={handleNextStep}
-                className='px-2 py-1 text-white transition-colors bg-blue-500 rounded-md hover:bg-blue-600'
+                className='px-4 py-2 text-white transition-colors bg-blue-500 rounded-md hover:bg-blue-600'
               >
                 Next
               </button>
@@ -93,7 +96,7 @@ const PatientBooking = () => {
                     setClinicId(e.target.value);
                     setDoctorId('');
                   }}
-                  className='block w-full mt-1 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500'
+                  className='block w-full px-1 py-2 mt-1 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500'
                 >
                   <option value=''>Select Clinic</option>
                   {clinics.map((clinic) => (
@@ -113,7 +116,7 @@ const PatientBooking = () => {
                 <select
                   value={doctorId}
                   onChange={(e) => setDoctorId(e.target.value)}
-                  className='block w-full py-2 mt-4 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500'
+                  className='block w-full px-1 py-2 mt-4 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500'
                   disabled={doctorsLoading}
                 >
                   <option value=''>Select Doctor</option>

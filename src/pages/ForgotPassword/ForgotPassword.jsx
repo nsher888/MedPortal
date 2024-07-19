@@ -1,9 +1,11 @@
 // src/pages/ForgotPassword.js
 import TextInput from '../../components/TextInput';
+import usePageTitle from '../../hooks/usePageTitle';
 import { usePasswordReset } from '../../hooks/usePasswordReset';
 
 const ForgotPassword = () => {
   const { register, handleSubmit, errors, onSubmit } = usePasswordReset(false);
+  usePageTitle('Forgot Password');
 
   return (
     <div>
@@ -20,7 +22,7 @@ const ForgotPassword = () => {
             <div className='w-full max-w-sm mx-auto lg:w-96'>
               <div>
                 <h2 className='mt-8 text-3xl font-bold leading-9 tracking-tight text-gray-900'>
-                  Reset your password
+                  Forgot your password?
                 </h2>
               </div>
 
@@ -47,7 +49,7 @@ const ForgotPassword = () => {
                         type='submit'
                         className='flex w-full justify-center rounded-md bg-customBlue transition duration-300 ease-in-out  px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-customBlueHover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-customBlue'
                       >
-                        Reset
+                        Reset Password
                       </button>
                     </div>
                   </form>
