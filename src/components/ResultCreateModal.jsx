@@ -1,6 +1,13 @@
 import { useRef } from 'react';
 
-const Modal = ({ isOpen, onClose, title, children, footer, className }) => {
+const ResultCreateModal = ({
+  isOpen,
+  onClose,
+  title,
+  children,
+  footer,
+  className,
+}) => {
   const modalRef = useRef(null);
 
   const handleClickOutside = (event) => {
@@ -20,11 +27,10 @@ const Modal = ({ isOpen, onClose, title, children, footer, className }) => {
       onClick={handleClickOutside}
     >
       <div className='fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75'></div>
-      <div className='fixed inset-0 z-10 flex items-center justify-center p-4 overflow-y-auto'>
+      <div className='fixed inset-0 z-10 flex items-center justify-center p-4 overflow-y-auto lg:pl-72'>
         <div
           ref={modalRef}
-          className={`relative bg-white rounded-lg shadow-xl sm:my-8 inline-block md:ml-72 min-w-80 md:min-w-[400px] align-middle ${className} max-w-full p-6`}
-          style={{ width: 'auto' }}
+          className={`relative mt-64 md:mt-0 w-full max-w-lg p-6 bg-white rounded-lg shadow-xl sm:my-8 ${className}`}
         >
           <div className='absolute top-0 right-0 hidden pt-4 pr-4 sm:block'>
             <button
@@ -69,4 +75,4 @@ const Modal = ({ isOpen, onClose, title, children, footer, className }) => {
   );
 };
 
-export default Modal;
+export default ResultCreateModal;

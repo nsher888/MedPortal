@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 export const useClinicDashboard = (data) => {
   const statistics = data.data;
 
@@ -75,10 +77,28 @@ export const useClinicDashboard = (data) => {
     ],
   };
 
+  const [legendVisible, setLegendVisible] = useState(true);
+  useEffect(() => {
+    const updateLegendPosition = () => {
+      if (window.innerWidth <= 768) {
+        setLegendVisible(false);
+      } else {
+        setLegendVisible(true);
+      }
+    };
+
+    updateLegendPosition();
+    window.addEventListener('resize', updateLegendPosition);
+
+    return () => {
+      window.removeEventListener('resize', updateLegendPosition);
+    };
+  }, []);
+
   const pieChartOptions = {
     plugins: {
       legend: {
-        display: true,
+        display: legendVisible,
         position: 'left',
       },
     },

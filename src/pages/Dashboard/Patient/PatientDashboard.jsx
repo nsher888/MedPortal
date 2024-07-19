@@ -37,21 +37,9 @@ const PatientDashboard = () => {
     },
     {
       accessorKey: 'doctorNames',
-      header: 'Doctor Names',
+      header: 'Doctor(s)',
       enableSorting: false,
       cell: (props) => <div>{props.getValue().join(', ')}</div>,
-    },
-    {
-      accessorKey: 'patientName',
-      header: 'Patient Name',
-      enableSorting: false,
-      cell: (props) => <div>{props.getValue()}</div>,
-    },
-    {
-      accessorKey: 'surname',
-      header: 'Surname',
-      enableSorting: false,
-      cell: (props) => <div>{props.getValue()}</div>,
     },
     {
       accessorKey: 'testType',
@@ -116,7 +104,7 @@ const PatientDashboard = () => {
   if (error) return <div>Error loading data</div>;
 
   return (
-    <div className='px-4 sm:px-6 lg:px-4'>
+    <div className='px-4 sm:px-6 lg:px-8'>
       <div className='sm:flex sm:items-center'>
         <div className='sm:flex-auto'>
           <h1 className='text-base font-semibold leading-6 text-gray-900'>

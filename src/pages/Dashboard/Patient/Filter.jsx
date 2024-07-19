@@ -120,7 +120,7 @@ const FilterPopover = ({
   });
 
   return (
-    <div className='relative flex mt-6'>
+    <div className='relative flex flex-wrap gap-4 mt-6 md:gap-0'>
       <div className='relative' ref={clinicRef}>
         <button
           className={`flex items-center px-4 py-2 text-sm font-medium rounded-md border ${
@@ -162,7 +162,7 @@ const FilterPopover = ({
         )}
       </div>
 
-      <div className='relative ml-4' ref={testTypeRef}>
+      <div className='relative md:ml-4' ref={testTypeRef}>
         <button
           className={`flex items-center px-4 py-2 text-sm font-medium rounded-md border ${
             filterTypes.length > 0
@@ -211,7 +211,7 @@ const FilterPopover = ({
       </div>
 
       <button
-        className='flex items-center px-4 py-2 ml-4 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-200'
+        className='flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md md:ml-4 hover:bg-gray-200'
         onClick={clearFilters}
       >
         Clear Filters

@@ -4,7 +4,7 @@ import TextInput from '../../components/TextInput';
 import useLogIn from '../../hooks/useLogIn';
 
 const LogIn = () => {
-  const { register, handleSubmit, errors, onSubmit } = useLogIn();
+  const { register, handleSubmit, errors, backendError, onSubmit } = useLogIn();
 
   return (
     <div className='min-h-full'>
@@ -27,12 +27,16 @@ const LogIn = () => {
             <div className='mt-10'>
               <div>
                 <form onSubmit={handleSubmit(onSubmit)}>
+                  {backendError && (
+                    <div className='mb-4 text-red-600'>{backendError}</div>
+                  )}
+
                   <TextInput
                     label='Email address'
                     name='email'
                     type='email'
                     errorMessage={errors.email?.message}
-                    placeholder={'Enter your email adress'}
+                    placeholder={'Enter your email address'}
                     register={register('email', {
                       required: "This field can't be empty",
                       pattern: {
@@ -70,7 +74,7 @@ const LogIn = () => {
                   <div>
                     <button
                       type='submit'
-                      className='flex w-full justify-center rounded-md bg-customBlue transition duration-300 ease-in-out  px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-customBlueHover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-customBlue'
+                      className='flex w-full justify-center rounded-md bg-customBlue transition duration-300 ease-in-out px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-customBlueHover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-customBlue'
                     >
                       Sign in
                     </button>

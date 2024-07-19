@@ -43,8 +43,8 @@ export default function DoctorsList() {
 
   return (
     <div className='px-4 sm:px-6 lg:px-4'>
-      <div className='sm:flex sm:items-center'>
-        <div className='sm:flex-auto'>
+      <div className='flex flex-col items-start sm:flex-row sm:items-center sm:justify-between'>
+        <div className='flex-1'>
           <h1 className='text-base font-semibold leading-6 text-gray-900'>
             Doctors
           </h1>
@@ -52,18 +52,18 @@ export default function DoctorsList() {
             A list of all the doctors in the clinic.
           </p>
         </div>
-        <div className='sm:flex-none'>
+        <div className='w-full mt-4 sm:w-auto sm:mt-0 sm:ml-4'>
           <SearchInput
             searchValue={searchValue}
             handleSearchChange={handleSearchChange}
             placeholder='Search Doctors...'
           />
         </div>
-        <div className='mt-4 sm:ml-16 sm:mt-0 sm:flex-none'>
+        <div className='w-full mt-4 sm:w-auto sm:mt-0 md:ml-5'>
           <button
             type='button'
             onClick={() => setIsModalOpen(true)}
-            className='block px-3 py-2 text-sm font-semibold text-center text-white rounded-md shadow-sm bg-customBlue hover:bg-customBlueHover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+            className='block w-full px-3 py-2 text-sm font-semibold text-center text-white rounded-md shadow-sm bg-customBlue hover:bg-customBlueHover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:w-auto'
           >
             Add Doctor
           </button>
@@ -145,26 +145,28 @@ export default function DoctorsList() {
           </div>
         </div>
       </div>
-      <div className='flex items-center justify-between mt-4'>
-        <div className='text-sm text-gray-700'>
+      <div className='flex flex-col items-center justify-between mt-4 md:flex-row'>
+        <div className='mb-4 text-sm text-gray-700 md:mb-0'>
           Showing {startItem} to {endItem} of {doctors.total} doctors
         </div>
-        <div className='flex items-center'>
-          <button
-            className='px-3 py-1 mx-1 text-sm font-semibold text-gray-700 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500'
-            onClick={handleFirstPage}
-            disabled={page === 1}
-          >
-            &lt;&lt; First
-          </button>
-          <button
-            className='px-3 py-1 mx-1 text-sm font-semibold text-gray-700 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500'
-            onClick={handlePreviousPage}
-            disabled={page === 1}
-          >
-            &lt; Previous
-          </button>
-          <div className='flex items-center mx-2'>
+        <div className='flex flex-col items-center sm:flex-row'>
+          <div className='flex items-center mb-4 sm:mb-0'>
+            <button
+              className='px-3 py-1 mx-1 text-sm font-semibold text-gray-700 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500'
+              onClick={handleFirstPage}
+              disabled={page === 1}
+            >
+              &lt;&lt; First
+            </button>
+            <button
+              className='px-3 py-1 mx-1 text-sm font-semibold text-gray-700 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500'
+              onClick={handlePreviousPage}
+              disabled={page === 1}
+            >
+              &lt; Previous
+            </button>
+          </div>
+          <div className='flex items-center mb-4 sm:mb-0'>
             Page{' '}
             <input
               type='number'
@@ -177,20 +179,22 @@ export default function DoctorsList() {
             />{' '}
             of {doctors.last_page}
           </div>
-          <button
-            className='px-3 py-1 mx-1 text-sm font-semibold text-gray-700 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500'
-            onClick={handleNextPage}
-            disabled={isPreviousData || doctors.last_page <= page}
-          >
-            Next &gt;
-          </button>
-          <button
-            className='px-3 py-1 mx-1 text-sm font-semibold text-gray-700 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500'
-            onClick={handleLastPage}
-            disabled={isPreviousData || doctors.last_page <= page}
-          >
-            Last &gt;&gt;
-          </button>
+          <div className='flex items-center mb-4 sm:mb-0'>
+            <button
+              className='px-3 py-1 mx-1 text-sm font-semibold text-gray-700 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500'
+              onClick={handleNextPage}
+              disabled={isPreviousData || doctors.last_page <= page}
+            >
+              Next &gt;
+            </button>
+            <button
+              className='px-3 py-1 mx-1 text-sm font-semibold text-gray-700 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500'
+              onClick={handleLastPage}
+              disabled={isPreviousData || doctors.last_page <= page}
+            >
+              Last &gt;&gt;
+            </button>
+          </div>
           <select
             value={perPage}
             onChange={handlePerPageChange}

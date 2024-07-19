@@ -1,11 +1,12 @@
 import HomePageImg from '@/assets/homepage-img.png';
 
 import { Button, Services, Testimonials } from './components';
+import { Link } from 'react-router-dom';
 
 const HomePage = () => {
   return (
     <>
-      <section className='grid items-center grid-cols-2 gap-10'>
+      <section className='grid items-center grid-cols-1 gap-10 p-4 md:grid-cols-2'>
         <div>
           <h1 className='text-5xl font-bold leading-normal'>
             <span className='text-customBlue'>We care</span> <br />
@@ -15,18 +16,21 @@ const HomePage = () => {
             Good health is the state of mental, physical and social well being
             and it does not just mean absence of diseases.
           </p>
-          <div className='mt-20'>
-            <Button text='View Your Medical Data' icon={true} />
+          <div className='mt-10 md:mt-20'>
+            <Button route='login' text='View Your Medical Data' icon={true} />
           </div>
-          <div className='flex gap-4 mt-11'>
-            <p>Want become member of your portal</p>
-            <a className='transition duration-300 ease-in-out cursor-pointer text-customBlue hover:text-customBlueHover'>
+          <div className='flex flex-col gap-4 mt-6 md:flex-row md:mt-11'>
+            <p>Want to become a member of our portal?</p>
+            <Link
+              to='register'
+              className='transition duration-300 ease-in-out cursor-pointer text-customBlue hover:text-customBlueHover'
+            >
               Sign Up
-            </a>
+            </Link>
           </div>
         </div>
         <div>
-          <img src={HomePageImg} alt='doctor' className='rounded-xl' />
+          <img src={HomePageImg} alt='doctor' className='w-full rounded-xl' />
         </div>
       </section>
 

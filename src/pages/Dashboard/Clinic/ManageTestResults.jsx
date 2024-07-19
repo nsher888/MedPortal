@@ -3,7 +3,7 @@ import { Controller } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import AsyncSelect from 'react-select/async';
 
-import Modal from '../../../components/Modal';
+import ResultCreateModal from '../../../components/ResultCreateModal';
 import ResultsSearchInput from '../../../components/ResultsSearchInput';
 import TextInput from '../../../components/TextInput';
 import useSearch from '../../../hooks/useSearch';
@@ -49,8 +49,8 @@ const ManageTestResults = () => {
 
   return (
     <div className='px-4 sm:px-6 lg:px-4'>
-      <div className='sm:flex sm:items-center'>
-        <div className='sm:flex-auto'>
+      <div className='flex flex-col items-start sm:flex-row sm:items-center sm:justify-between'>
+        <div className='flex-1'>
           <h1 className='text-base font-semibold leading-6 text-gray-900'>
             Test Results
           </h1>
@@ -58,18 +58,17 @@ const ManageTestResults = () => {
             A list of all the test results in the clinic.
           </p>
         </div>
-        <div className='sm:flex-none'>
+        <div className='w-full mt-4 sm:w-auto sm:mt-0 sm:ml-4'>
           <ResultsSearchInput
             searchValue={searchValue}
             handleSearchChange={handleSearchChange}
             placeholder='Search Test Results...'
           />
         </div>
-
-        <div className='mt-4 sm:ml-16 sm:mt-0 sm:flex-none'>
+        <div className='w-full mt-4 md:ml-5 sm:w-auto sm:mt-0 '>
           <button
             onClick={() => setIsModalOpen(true)}
-            className='block px-3 py-2 text-sm font-semibold text-center text-white bg-indigo-600 rounded-md shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+            className='block w-full px-3 py-2 text-sm font-semibold text-center text-white rounded-md shadow-sm bg-customBlue hover:bg-customBlueHover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:w-auto'
           >
             Add Test Result
           </button>
@@ -184,26 +183,28 @@ const ManageTestResults = () => {
           </div>
         </div>
       </div>
-      <div className='flex items-center justify-between mt-4'>
-        <div className='text-sm text-gray-700'>
+      <div className='flex flex-col items-center justify-between mt-4 md:flex-row'>
+        <div className='mb-4 text-sm text-gray-700 md:mb-0'>
           Showing {startItem} to {endItem} of {results.total} results
         </div>
-        <div className='flex items-center'>
-          <button
-            className='px-3 py-1 mx-1 text-sm font-semibold text-gray-700 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500'
-            onClick={handleFirstPage}
-            disabled={page === 1}
-          >
-            &lt;&lt; First
-          </button>
-          <button
-            className='px-3 py-1 mx-1 text-sm font-semibold text-gray-700 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500'
-            onClick={handlePreviousPage}
-            disabled={page === 1}
-          >
-            &lt; Previous
-          </button>
-          <div className='flex items-center mx-2'>
+        <div className='flex flex-col items-center sm:flex-row'>
+          <div className='flex items-center mb-4 sm:mb-0'>
+            <button
+              className='px-3 py-1 mx-1 text-sm font-semibold text-gray-700 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500'
+              onClick={handleFirstPage}
+              disabled={page === 1}
+            >
+              &lt;&lt; First
+            </button>
+            <button
+              className='px-3 py-1 mx-1 text-sm font-semibold text-gray-700 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500'
+              onClick={handlePreviousPage}
+              disabled={page === 1}
+            >
+              &lt; Previous
+            </button>
+          </div>
+          <div className='flex items-center mb-4 sm:mb-0'>
             Page{' '}
             <input
               type='number'
@@ -216,24 +217,26 @@ const ManageTestResults = () => {
             />{' '}
             of {results.last_page}
           </div>
-          <button
-            className='px-3 py-1 mx-1 text-sm font-semibold text-gray-700 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500'
-            onClick={handleNextPage}
-            disabled={isPreviousData || results.last_page <= page}
-          >
-            Next &gt;
-          </button>
-          <button
-            className='px-3 py-1 mx-1 text-sm font-semibold text-gray-700 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500'
-            onClick={handleLastPage}
-            disabled={isPreviousData || results.last_page <= page}
-          >
-            Last &gt;&gt;
-          </button>
+          <div className='flex items-center mb-4 sm:mb-0'>
+            <button
+              className='px-3 py-1 mx-1 text-sm font-semibold text-gray-700 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500'
+              onClick={handleNextPage}
+              disabled={isPreviousData || results.last_page <= page}
+            >
+              Next &gt;
+            </button>
+            <button
+              className='px-3 py-1 mx-1 text-sm font-semibold text-gray-700 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500'
+              onClick={handleLastPage}
+              disabled={isPreviousData || results.last_page <= page}
+            >
+              Last &gt;&gt;
+            </button>
+          </div>
           <select
             value={perPage}
             onChange={handlePerPageChange}
-            className='px-3 py-1 ml-4 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500'
+            className='px-3 py-1 mt-2 ml-4 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm lg:mt-0 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500'
           >
             <option value={10}>10</option>
             <option value={20}>20</option>
@@ -242,7 +245,7 @@ const ManageTestResults = () => {
           </select>
         </div>
       </div>
-      <Modal
+      <ResultCreateModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         title='Add Test Result'
@@ -356,13 +359,13 @@ const ManageTestResults = () => {
           <div className='flex justify-end'>
             <button
               type='submit'
-              className='inline-flex justify-center px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+              className='inline-flex justify-center px-4 py-2 text-sm font-semibold text-white rounded-md shadow-sm bg-customBlue hover:bg-customBlueHover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
             >
               Submit
             </button>
           </div>
         </form>
-      </Modal>
+      </ResultCreateModal>
     </div>
   );
 };
