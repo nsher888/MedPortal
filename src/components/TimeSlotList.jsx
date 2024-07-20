@@ -1,5 +1,6 @@
 import { useQuery } from 'react-query';
 
+import { useAuth } from '../hooks/useAuth';
 import { fetchTimeSlots } from '../services/booking/availabilities';
 
 import BookAppointment from './BookAppointment';
@@ -16,6 +17,7 @@ const TimeSlotList = ({ doctorId, date, onClose }) => {
       enabled: !!doctorId && !!date,
     },
   );
+  const { profile } = useAuth();
 
   if (isLoading)
     return <div className='text-center text-gray-600'>Loading...</div>;
@@ -35,7 +37,12 @@ const TimeSlotList = ({ doctorId, date, onClose }) => {
                 className='flex items-center justify-between p-2 bg-white rounded-lg shadow-sm hover:shadow-md'
               >
                 <span className='text-sm text-gray-700'>{slot.start_time}</span>
-                <BookAppointment timeSlotId={slot.id} onClose={onClose} />
+                <BookAppointment
+                  timeSlotId={slot.id}
+                  onClose={onClose}
+                  doctorId={slot.doctor_id}
+                  userId={profile.id}
+                />
               </div>
             ))}
           </div>

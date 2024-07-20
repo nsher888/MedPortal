@@ -57,8 +57,12 @@ export const fetchAppointments = async () => {
   return response.data;
 };
 
-export const bookAppointment = async ({ timeSlotId }) => {
-  await instance.post('/api/appointments', { time_slot_id: timeSlotId });
+export const bookAppointment = async ({ timeSlotId, doctorId, userId }) => {
+  await instance.post('/api/appointments', {
+    time_slot_id: timeSlotId,
+    doctor_id: doctorId,
+    user_id: userId,
+  });
 };
 
 export const cancelAvailability = async (id) => {
