@@ -1,18 +1,15 @@
+import { useEffect } from 'react';
 import Calendar from 'react-calendar';
 
 import 'react-calendar/dist/Calendar.css';
 import AvailabilityForm from '../../../components/AvailabilityForm';
 import Modal from '../../../components/Modal';
 import MultiDateAvailabilityForm from '../../../components/MultiDateAvailabilityForm';
-
-import useDoctorDashboard from './useDoctorDashboard';
-
 import '../../../css/DoctorDashboard.css';
 import useEcho from '../../../hooks/echo';
-
-import { useEffect } from 'react';
-
 import { useAuth } from '../../../hooks/useAuth';
+
+import useDoctorDashboard from './useDoctorDashboard';
 
 const DoctorDashboard = () => {
   const {
@@ -41,7 +38,6 @@ const DoctorDashboard = () => {
   };
 
   const { profile } = useAuth();
-
   const echo = useEcho();
 
   useEffect(() => {
@@ -74,13 +70,14 @@ const DoctorDashboard = () => {
               Set your availability for the selected date
             </p>
           </div>
-
-          <button
-            onClick={() => setIsMultiDateModalOpen(true)}
-            className='px-4 py-2 mt-4 font-bold text-white rounded-lg bg-customBlue hover:bg-customBlueHover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-customBlue'
-          >
-            Set Availability for Multiple Dates
-          </button>
+          <div className='flex items-center justify-between gap-8 mt-4 md:mt-0'>
+            <button
+              onClick={() => setIsMultiDateModalOpen(true)}
+              className='px-4 py-2 font-bold text-white rounded-lg bg-customBlue hover:bg-customBlueHover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-customBlue'
+            >
+              Set Availability for Multiple Dates
+            </button>
+          </div>
         </div>
         <div className='flex flex-col items-center justify-center w-full h-screen mt-2'>
           <div className='w-full h-full p-4'>
