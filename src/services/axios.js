@@ -5,9 +5,14 @@ const instance = axios.create({
   headers: {
     Accept: 'application/json',
     'Access-Control-Allow-Origin': '*',
+    'X-Requested-With': 'XMLHttpRequest',
   },
   withCredentials: true,
   withXSRFToken: true,
 });
+
+export const setBearerToken = (token) => {
+  instance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+};
 
 export default instance;

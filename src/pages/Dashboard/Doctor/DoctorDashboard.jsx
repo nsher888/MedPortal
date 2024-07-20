@@ -1,11 +1,18 @@
 import Calendar from 'react-calendar';
+
 import 'react-calendar/dist/Calendar.css';
 import AvailabilityForm from '../../../components/AvailabilityForm';
 import Modal from '../../../components/Modal';
 import MultiDateAvailabilityForm from '../../../components/MultiDateAvailabilityForm';
 
 import useDoctorDashboard from './useDoctorDashboard';
+
 import '../../../css/DoctorDashboard.css';
+import useEcho from '../../../hooks/echo';
+
+import { useEffect } from 'react';
+
+import { useAuth } from '../../../hooks/useAuth';
 
 const DoctorDashboard = () => {
   const {
@@ -32,6 +39,25 @@ const DoctorDashboard = () => {
   const tileDisabled = ({ date, view }) => {
     return view === 'month' && date < new Date().setHours(0, 0, 0, 0);
   };
+
+  const { profile } = useAuth();
+
+  const echo = useEcho();
+
+  useEffect(() => {
+    if (echo && profile) {
+      const channel = echo.private(`appointment.${profile.id}`);
+
+      channel.listen('AppointmentBooked', (e) => {
+        console.log('Appointment booked:', e);
+      });
+
+      return () => {
+        channel.stopListening('AppointmentBooked');
+        echo.leave(`appointment.${profile.id}`);
+      };
+    }
+  }, [echo, profile]);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading availabilities</div>;
