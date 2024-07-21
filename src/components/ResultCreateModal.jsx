@@ -27,10 +27,10 @@ const ResultCreateModal = ({
       onClick={handleClickOutside}
     >
       <div className='fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75'></div>
-      <div className='fixed inset-0 z-10 flex items-center justify-center p-4 overflow-y-auto lg:pl-72'>
+      <div className='fixed inset-0 z-10 flex items-center justify-center p-4 overflow-y-auto'>
         <div
           ref={modalRef}
-          className={`relative mt-64 md:mt-0 w-full max-w-lg p-6 bg-white rounded-lg shadow-xl sm:my-8 ${className}`}
+          className={`relative w-full max-w-lg p-6 bg-white rounded-lg shadow-xl lg:ml-72 mt-20 sm:mt-20 ${className}`}
         >
           <div className='absolute top-0 right-0 hidden pt-4 pr-4 sm:block'>
             <button
@@ -55,7 +55,9 @@ const ResultCreateModal = ({
               </svg>
             </button>
           </div>
-          <div>
+          <div className='max-h-[calc(100vh-160px)] overflow-y-auto'>
+            {' '}
+            {/* Ensure scrolling if overflow */}
             <div className='w-full mt-3 text-center sm:mt-0 sm:text-left'>
               <h3
                 className='text-base font-semibold leading-6 text-gray-900'

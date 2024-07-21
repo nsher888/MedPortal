@@ -44,7 +44,6 @@ export const getDoctorsSuggestions = async (search) => {
       search,
     },
   });
-  console.log(response);
   return response;
 };
 

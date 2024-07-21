@@ -55,7 +55,7 @@ const PatientBooking = () => {
       </h1>
       <button
         onClick={handleOpenModal}
-        className='px-4 py-2 mb-6 text-white bg-blue-500 rounded-md hover:bg-blue-600'
+        className='px-4 py-2 mb-6 text-white rounded-md bg-customBlue hover:bg-customBlueHover'
       >
         Book an Appointment
       </button>
@@ -151,7 +151,7 @@ const PatientBooking = () => {
                     setSelectedMonth(parseInt(e.target.value));
                     setSelectedYear(currentYear);
                   }}
-                  className='block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500'
+                  className='block w-full px-1 py-2 mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500'
                 >
                   {filteredMonths.map((month, index) => (
                     <option key={index} value={currentMonth + index}>
