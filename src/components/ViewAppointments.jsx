@@ -54,11 +54,11 @@ const ViewAppointments = () => {
       <h2 className='mb-4 text-2xl font-bold text-gray-800'>
         Your Appointments
       </h2>
-      <div className='grid grid-cols-1 gap-6 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4'>
+      <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
         {futureAppointments.map((appointment) => (
           <div
             key={appointment.id}
-            className='p-6 bg-white border rounded-md shadow-sm max-w-72'
+            className='p-6 transition-transform duration-200 transform bg-white border rounded-lg shadow-md hover:scale-105'
           >
             <div className='mb-2 text-gray-700'>
               <span className='font-semibold'>Date:</span> {appointment.date}
@@ -71,13 +71,21 @@ const ViewAppointments = () => {
               <span className='font-semibold'>Doctor:</span>{' '}
               {appointment.doctor}
             </div>
-            <div className='mb-2 text-gray-700'>
+            <div className='mb-4 text-gray-700'>
               <span className='font-semibold'>Status:</span>{' '}
-              {appointment.status}
+              <span
+                className={`inline-block px-2 py-1 text-sm font-medium rounded-full ${
+                  appointment.status === 'Confirmed'
+                    ? 'bg-green-100 text-green-800'
+                    : 'bg-red-100 text-red-800'
+                }`}
+              >
+                {appointment.status}
+              </span>
             </div>
             <button
               onClick={() => handleCancelAppointment(appointment.id)}
-              className='px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600'
+              className='w-full px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2'
             >
               Cancel Appointment
             </button>

@@ -14,7 +14,6 @@ const BookAppointment = ({ timeSlotId, onClose, doctorId, userId }) => {
     },
   });
 
-  console.log(doctorId, userId);
   return (
     <button
       onClick={() => mutation.mutate({ timeSlotId, doctorId, userId })}

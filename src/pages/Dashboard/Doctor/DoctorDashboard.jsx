@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import Calendar from 'react-calendar';
 
 import 'react-calendar/dist/Calendar.css';
@@ -6,8 +5,6 @@ import AvailabilityForm from '../../../components/AvailabilityForm';
 import Modal from '../../../components/Modal';
 import MultiDateAvailabilityForm from '../../../components/MultiDateAvailabilityForm';
 import '../../../css/DoctorDashboard.css';
-import useEcho from '../../../hooks/echo';
-import { useAuth } from '../../../hooks/useAuth';
 
 import useDoctorDashboard from './useDoctorDashboard';
 
@@ -37,24 +34,6 @@ const DoctorDashboard = () => {
     return view === 'month' && date < new Date().setHours(0, 0, 0, 0);
   };
 
-  const { profile } = useAuth();
-  const echo = useEcho();
-
-  useEffect(() => {
-    if (echo && profile) {
-      const channel = echo.private(`appointment.${profile.id}`);
-
-      channel.listen('AppointmentBooked', (e) => {
-        console.log('Appointment booked:', e);
-      });
-
-      return () => {
-        channel.stopListening('AppointmentBooked');
-        echo.leave(`appointment.${profile.id}`);
-      };
-    }
-  }, [echo, profile]);
-
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading availabilities</div>;
 
@@ -80,7 +59,7 @@ const DoctorDashboard = () => {
           </div>
         </div>
         <div className='flex flex-col items-center justify-center w-full h-screen mt-2'>
-          <div className='w-full h-full p-4'>
+          <div className='w-full h-full p-4 '>
             <Calendar
               onChange={handleDateChange}
               value={date}
@@ -88,12 +67,12 @@ const DoctorDashboard = () => {
               tileContent={({ date }) => {
                 const availabilityTime = getAvailabilityForDate(date);
                 return availabilityTime ? (
-                  <div className='text-xs font-semibold text-green-600 availability-indicator'>
+                  <div className='text-[10px] md:text-sm font-semibold text-green-600 availability-indicator'>
                     {availabilityTime}
                   </div>
                 ) : null;
               }}
-              className='w-full h-full'
+              className='w-full h-full overflow-y-auto'
               tileClassName='calendar-tile'
             />
           </div>

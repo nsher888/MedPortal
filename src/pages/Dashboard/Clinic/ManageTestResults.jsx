@@ -1,15 +1,17 @@
 import { format } from 'date-fns';
 import { Controller } from 'react-hook-form';
+import Skeleton from 'react-loading-skeleton';
 import { Link } from 'react-router-dom';
 import AsyncSelect from 'react-select/async';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 import ResultCreateModal from '../../../components/ResultCreateModal';
 import ResultsSearchInput from '../../../components/ResultsSearchInput';
 import TextInput from '../../../components/TextInput';
+import usePageTitle from '../../../hooks/usePageTitle';
 import useSearch from '../../../hooks/useSearch';
 
 import { useManageTestResults } from './useManageTestResults';
-import usePageTitle from '../../../hooks/usePageTitle';
 
 const ManageTestResults = () => {
   const { searchValue, handleSearchChange } = useSearch();
@@ -42,12 +44,43 @@ const ManageTestResults = () => {
     isPreviousData,
   } = useManageTestResults(searchValue);
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
+  const renderSkeleton = () => {
+    const skeletonRows = [];
+    for (let i = 0; i < perPage; i++) {
+      skeletonRows.push(
+        <tr key={i}>
+          <td className='py-4 pl-4 pr-3 sm:pl-6 lg:pl-8'>
+            <Skeleton height={20} width='80%' />
+          </td>
+          <td className='px-3 py-4'>
+            <Skeleton height={20} width='80%' />
+          </td>
+          <td className='px-3 py-4'>
+            <Skeleton height={20} width='80%' />
+          </td>
+          <td className='px-3 py-4'>
+            <Skeleton height={20} width='80%' />
+          </td>
+          <td className='px-3 py-4'>
+            <Skeleton height={20} width='80%' />
+          </td>
+          <td className='px-3 py-4'>
+            <Skeleton height={20} width='80%' />
+          </td>
+          <td className='px-3 py-4'>
+            <Skeleton height={20} width='80%' />
+          </td>
+          <td className='px-3 py-4'>
+            <Skeleton height={20} width='80%' />
+          </td>
+        </tr>,
+      );
+    }
+    return skeletonRows;
+  };
 
   const startItem = (page - 1) * perPage + 1;
-  const endItem = Math.min(page * perPage, results.total);
+  const endItem = Math.min(page * perPage, results?.total || 0);
 
   return (
     <div className='px-4 sm:px-6 lg:px-4'>
@@ -131,55 +164,63 @@ const ManageTestResults = () => {
                 </tr>
               </thead>
               <tbody className='bg-white divide-y divide-gray-200 '>
-                {results.data.length === 0 && (
-                  <tr className=''>
-                    <td colSpan='8' className='p-4 text-center '>
-                      No test results found
-                    </td>
-                  </tr>
+                {isLoading ? (
+                  renderSkeleton()
+                ) : (
+                  <>
+                    {results.data.length === 0 && (
+                      <tr className=''>
+                        <td colSpan='8' className='p-4 text-center '>
+                          No test results found
+                        </td>
+                      </tr>
+                    )}
+                    {results.data.map((result) => (
+                      <tr key={result.id}>
+                        <td className='py-4 pl-4 pr-3 text-sm font-medium text-gray-900 break-words max-w-[100px] sm:pl-6 lg:pl-8'>
+                          {result.patientName}
+                        </td>
+                        <td className='px-3 py-4 text-sm text-gray-500 break-words max-w-[100px]'>
+                          {result.surname}
+                        </td>
+                        <td className='px-3 py-4 text-sm text-gray-500'>
+                          {format(new Date(result.dob), 'MM/dd/yyyy')}
+                        </td>
+                        <td className='px-3 py-4 text-sm text-gray-500 break-words max-w-[200px]'>
+                          {result.doctorNames && result.doctorNames.join(', ')}
+                        </td>
+                        <td className='px-3 py-4 text-sm text-gray-500 break-words max-w-[200px]'>
+                          {result.testType}
+                        </td>
+                        <td className='px-3 py-4 text-sm text-gray-500'>
+                          {result.idNumber}
+                        </td>
+                        <td className='px-3 py-4 text-sm text-gray-500'>
+                          {format(new Date(result.created_at), 'MM/dd/yyyy')}
+                        </td>
+                        <td className='relative py-4 pl-3 pr-4 text-sm font-medium text-right whitespace-nowrap sm:pr-6 lg:pr-8'>
+                          <Link
+                            to={`/dashboard/manage-test-results/${result.id}`}
+                            className='text-indigo-600 hover:text-indigo-900'
+                          >
+                            View<span className='sr-only'>, {result.name}</span>
+                          </Link>
+                          {!isDoctor && (
+                            <button
+                              type='button'
+                              className='ml-4 text-sm font-medium text-red-600 hover:text-red-900'
+                              onClick={() =>
+                                deleteResultMutation.mutate(result.id)
+                              }
+                            >
+                              Delete
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </>
                 )}
-                {results.data.map((result) => (
-                  <tr key={result.id}>
-                    <td className='py-4 pl-4 pr-3 text-sm font-medium text-gray-900 break-words max-w-[100px] sm:pl-6 lg:pl-8'>
-                      {result.patientName}
-                    </td>
-                    <td className='px-3 py-4 text-sm text-gray-500 break-words max-w-[100px]'>
-                      {result.surname}
-                    </td>
-                    <td className='px-3 py-4 text-sm text-gray-500'>
-                      {format(new Date(result.dob), 'MM/dd/yyyy')}
-                    </td>
-                    <td className='px-3 py-4 text-sm text-gray-500 break-words max-w-[200px]'>
-                      {result.doctorNames && result.doctorNames.join(', ')}
-                    </td>
-                    <td className='px-3 py-4 text-sm text-gray-500 break-words max-w-[200px]'>
-                      {result.testType}
-                    </td>
-                    <td className='px-3 py-4 text-sm text-gray-500'>
-                      {result.idNumber}
-                    </td>
-                    <td className='px-3 py-4 text-sm text-gray-500'>
-                      {format(new Date(result.created_at), 'MM/dd/yyyy')}
-                    </td>
-                    <td className='relative py-4 pl-3 pr-4 text-sm font-medium text-right whitespace-nowrap sm:pr-6 lg:pr-8'>
-                      <Link
-                        to={`/dashboard/manage-test-results/${result.id}`}
-                        className='text-indigo-600 hover:text-indigo-900'
-                      >
-                        View<span className='sr-only'>, {result.name}</span>
-                      </Link>
-                      {!isDoctor && (
-                        <button
-                          type='button'
-                          className='ml-4 text-sm font-medium text-red-600 hover:text-red-900'
-                          onClick={() => deleteResultMutation.mutate(result.id)}
-                        >
-                          Delete
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                ))}
               </tbody>
             </table>
           </div>
@@ -187,7 +228,7 @@ const ManageTestResults = () => {
       </div>
       <div className='flex flex-col items-center justify-between mt-4 md:flex-row'>
         <div className='mb-4 text-sm text-gray-700 md:mb-0'>
-          Showing {startItem} to {endItem} of {results.total} results
+          Showing {startItem} to {endItem} of {results?.total || 0} results
         </div>
         <div className='flex flex-col items-center sm:flex-row'>
           <div className='flex items-center mb-4 sm:mb-0'>
@@ -215,22 +256,22 @@ const ManageTestResults = () => {
               onBlur={handlePageChange}
               className='w-12 px-2 py-1 mx-1 text-sm font-semibold text-center text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500'
               min={1}
-              max={results.last_page}
+              max={results?.last_page || 1}
             />{' '}
-            of {results.last_page}
+            of {results?.last_page || 1}
           </div>
           <div className='flex items-center mb-4 sm:mb-0'>
             <button
               className='px-3 py-1 mx-1 text-sm font-semibold text-gray-700 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500'
               onClick={handleNextPage}
-              disabled={isPreviousData || results.last_page <= page}
+              disabled={isPreviousData || results?.last_page <= page}
             >
               Next &gt;
             </button>
             <button
               className='px-3 py-1 mx-1 text-sm font-semibold text-gray-700 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500'
               onClick={handleLastPage}
-              disabled={isPreviousData || results.last_page <= page}
+              disabled={isPreviousData || results?.last_page <= page}
             >
               Last &gt;&gt;
             </button>

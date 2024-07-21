@@ -22,13 +22,11 @@ const AvailabilityForm = ({ selectedDate, onClose }) => {
 
   useEffect(() => {
     if (selectedDate) {
-      console.log('Original selected date:', selectedDate);
       setValue('date', toLocalISOString(selectedDate));
     }
   }, [selectedDate, setValue]);
 
   const onSubmit = (data) => {
-    console.log('Form data before mutation:', data);
     mutate({
       date: data.date,
       start_time: data.startTime,

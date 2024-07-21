@@ -23,8 +23,7 @@ const Modal = ({ isOpen, onClose, title, children, footer, className }) => {
       <div className='fixed inset-0 z-10 flex items-center justify-center p-4 overflow-y-auto'>
         <div
           ref={modalRef}
-          className={`relative bg-white rounded-lg shadow-xl sm:my-8 inline-block md:ml-72 min-w-80 md:min-w-[400px] align-middle ${className} max-w-full md:max-w-4xl p-6`}
-          style={{ width: 'auto' }}
+          className={`relative bg-white rounded-lg shadow-xl lg:ml-72 overflow-y-auto sm:my-8 md:mt-20 min-w-80 md:min-w-[400px] ${className} max-w-full  max-h-[80vh] md:max-w-4xl p-6`}
         >
           <div className='absolute top-0 right-0 hidden pt-4 pr-4 sm:block'>
             <button
@@ -49,7 +48,7 @@ const Modal = ({ isOpen, onClose, title, children, footer, className }) => {
               </svg>
             </button>
           </div>
-          <div>
+          <div className='max-h-[calc(100vh-160px)] overflow-y-auto'>
             <div className='w-full mt-3 text-center sm:mt-0 sm:text-left'>
               <h3
                 className='text-base font-semibold leading-6 text-gray-900'
