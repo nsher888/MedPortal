@@ -48,7 +48,7 @@ const Modal = ({ isOpen, onClose, title, children, footer, className }) => {
               </svg>
             </button>
           </div>
-          <div className='max-h-[calc(100vh-160px)] overflow-y-auto'>
+          <div className=''>
             <div className='w-full mt-3 text-center sm:mt-0 sm:text-left'>
               <h3
                 className='text-base font-semibold leading-6 text-gray-900'
