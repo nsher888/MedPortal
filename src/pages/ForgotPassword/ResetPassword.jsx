@@ -1,16 +1,17 @@
 import { useForm } from 'react-hook-form';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import TextInput from '../../components/TextInput';
-import { resetPassword } from '../../services/session/resetPassword';
 import usePageTitle from '../../hooks/usePageTitle';
+import { resetPassword } from '../../services/session/resetPassword';
 
 const ResetPassword = () => {
   const { token } = useParams();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const email = searchParams.get('email');
+  const navigate = useNavigate();
 
   usePageTitle('Reset Password');
 
@@ -29,6 +30,7 @@ const ResetPassword = () => {
       toast.error(error.response.data.message);
     } finally {
       toast.success('Password reset successful');
+      navigate('/');
     }
   };
 
